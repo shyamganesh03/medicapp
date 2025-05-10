@@ -1,9 +1,10 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Dimensions, Text, View } from "react-native";
 
 const SignIn = () => {
+  const { height } = Dimensions.get("screen");
   return (
-    <View>
+    <View style={{ height }}>
       <Text>SignIn</Text>
     </View>
   );

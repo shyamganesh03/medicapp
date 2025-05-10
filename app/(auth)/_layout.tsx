@@ -1,11 +1,12 @@
-import { Stack } from "expo-router";
 import React from "react";
+import SignIn from "./sign-in";
 
 const AuthLayout = () => {
   return (
     <>
-      <Stack.Screen name="sign-in" />
-      <Stack.Screen name="sign-up" />
+      <SignIn />
+      {/* <Stack.Screen name="index" />
+      <Stack.Screen name="sign-up" /> */}
     </>
   );
 };

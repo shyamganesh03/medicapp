@@ -21,7 +21,6 @@ export default function RootLayout() {
     // Async font loading only occurs in development.
     return null;
   }
-
   return (
     <PaperProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -30,9 +29,9 @@ export default function RootLayout() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="(tabs)" />
           <Stack.Screen name="(auth)" />
-          <Stack.Screen name="+not-found" />
+          {/* <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" /> */}
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

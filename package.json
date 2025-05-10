@@ -5,8 +5,8 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "del /s .expo && cd .expo && rmdir types && cd .. && rmdir .expo && npx expo run:android --device",
+    "ios": "npx expo run:ios --device",
     "web": "expo start --web",
     "lint": "expo lint"
   },

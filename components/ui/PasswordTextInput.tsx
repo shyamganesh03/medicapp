@@ -33,6 +33,7 @@ const PasswordTextInput: React.FC<PasswordTextInputProps> = ({
       error={error}
       mode="outlined"
       theme={{ roundness: 20 }}
+
     />
   );
 };

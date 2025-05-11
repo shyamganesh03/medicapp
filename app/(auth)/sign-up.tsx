@@ -23,9 +23,24 @@ const SignUp = () => {
     password: "",
     reEnterPassword: "",
   });
+  const [hasError, setHasError] = React.useState(false);
+
+  const checkIsPasswordValid = (text: string, type: string) => {
+    if (type === "password") {
+      return text?.length < 4 && !!signupDetails?.password;
+    } else {
+      return (
+        ((text?.length < 4 && !!signupDetails?.reEnterPassword) ||
+          signupDetails?.password !== text) &&
+        !!signupDetails?.reEnterPassword
+      );
+    }
+  };
 
   const handleTextInputChange = (text: string, fieldName: string) => {
     setSignupDetails((prev) => ({ ...prev, [fieldName]: text }));
+    const hasError = checkIsPasswordValid(text, fieldName);
+    setHasError(hasError);
   };
 
   return (
@@ -75,16 +90,34 @@ const SignUp = () => {
           />
           <PasswordTextInput
             value={signupDetails.password}
+            error={
+              signupDetails?.password?.length < 4 && !!signupDetails?.password
+            }
             onChangeText={(value) => handleTextInputChange(value, "password")}
           />
           <PasswordTextInput
             value={signupDetails.reEnterPassword}
             label={AuthModule.LABEL_RE_ENTER_PASSWORD}
+            error={
+              ((signupDetails?.reEnterPassword?.length < 4 &&
+                !!signupDetails?.reEnterPassword) ||
+                signupDetails?.password !== signupDetails?.reEnterPassword) &&
+              !!signupDetails?.reEnterPassword
+            }
             onChangeText={(value) =>
               handleTextInputChange(value, "reEnterPassword")
             }
           />
-          <Button mode="contained" onPress={() => console.log("Pressed")}>
+          <Button
+            mode="contained"
+            onPress={() => console.log("Pressed")}
+            disabled={
+              hasError ||
+              !signupDetails?.password ||
+              !signupDetails?.reEnterPassword ||
+              !signupDetails?.userName
+            }
+          >
             Submit
           </Button>
           <Surface
@@ -116,7 +149,7 @@ const SignUp = () => {
             width: 80,
             borderRadius: 40,
             position: "absolute",
-            top: "24%",
+            top: "20%",
             left: "40%",
           }}
         >

@@ -10,12 +10,13 @@ import {
 } from "react-native";
 import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import AppIcon from "../../assets/images/app-icon.png";
 
 const SignIn = () => {
   const { height, width } = Dimensions.get("screen");
   const { colors } = useTheme();
+  const router = useRouter();
   const [loginDetails, setLoginDetails] = React.useState({
     userName: "",
     password: "",
@@ -73,25 +74,31 @@ const SignIn = () => {
             value={loginDetails.password}
             onChangeText={(value) => handleTextInputChange(value, "password")}
           />
-          <Button mode="contained" onPress={() => console.log("Pressed")}>
+          <Button
+            mode="contained"
+            onPress={() => {
+              router.push("/(tabs)");
+            }}
+            disabled={!loginDetails?.userName || !loginDetails?.password}
+          >
             Log In
           </Button>
-            <Surface
-              mode="flat"
-              style={{
-                backgroundColor: "transparent",
-                flexDirection: "row",
-                justifyContent: "center",
-              }}
+          <Surface
+            mode="flat"
+            style={{
+              backgroundColor: "transparent",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              mode="text"
+              onPress={() => console.log("Pressed")}
+              labelStyle={{ color: colors.onBackground }}
             >
-              <Button
-                mode="text"
-                onPress={() => console.log("Pressed")}
-                labelStyle={{ color: colors.onBackground }}
-              >
-                {AuthModule.FORGOT_PASSWORD}
-              </Button>
-            </Surface>
+              {AuthModule.FORGOT_PASSWORD}
+            </Button>
+          </Surface>
           <Surface
             mode="flat"
             style={{
@@ -101,7 +108,7 @@ const SignIn = () => {
               justifyContent: "center",
             }}
           >
-              <Text variant="bodyMedium">{AuthModule.NOT_HAVE_AN_ACCOUNT}</Text>
+            <Text variant="bodyMedium">{AuthModule.NOT_HAVE_AN_ACCOUNT}</Text>
             <Link href="/sign-up">
               <Text style={{ color: colors.primary }}>
                 {AuthModule.SIGN_UP_NOW}
@@ -116,7 +123,7 @@ const SignIn = () => {
             width: 80,
             borderRadius: 40,
             position: "absolute",
-            top: "24%",
+            top: "20%",
             left: "40%",
           }}
         >

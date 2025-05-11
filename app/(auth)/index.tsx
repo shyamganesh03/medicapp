@@ -6,32 +6,28 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
 } from "react-native";
 import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 
-import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 import AppIcon from "../../assets/images/app-icon.png";
 
-const SignUp = () => {
+const SignIn = () => {
   const { height, width } = Dimensions.get("screen");
   const { colors } = useTheme();
-  const router = useRouter();
-  const [signupDetails, setSignupDetails] = React.useState({
+  const [loginDetails, setLoginDetails] = React.useState({
     userName: "",
     password: "",
-    reEnterPassword: "",
   });
 
   const handleTextInputChange = (text: string, fieldName: string) => {
-    setSignupDetails((prev) => ({ ...prev, [fieldName]: text }));
+    setLoginDetails((prev) => ({ ...prev, [fieldName]: text }));
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      // keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
       style={{
         height,
         width,
@@ -53,10 +49,10 @@ const SignUp = () => {
           mode="flat"
         >
           <Text variant="displaySmall" style={{ color: colors.onPrimary }}>
-            {AuthModule.SIGN_UP_WELCOME_TEXT}
+            {AuthModule.SIGN_IN_WELCOME_TEXT}
           </Text>
           <Text variant="bodyMedium" style={{ color: colors.onPrimary }}>
-            {AuthModule.SIGN_UP_WELCOME_DESCRIPTION}
+            {AuthModule.SIGN_IN_WELCOME_DESCRIPTION}
           </Text>
         </Surface>
         <Surface
@@ -70,23 +66,32 @@ const SignUp = () => {
         >
           <InputText
             label={AuthModule.LABEL_USER_NAME}
-            value={signupDetails?.userName}
+            value={loginDetails?.userName}
             onChangeText={(value) => handleTextInputChange(value, "userName")}
           />
           <PasswordTextInput
-            value={signupDetails.password}
+            value={loginDetails.password}
             onChangeText={(value) => handleTextInputChange(value, "password")}
           />
-          <PasswordTextInput
-            value={signupDetails.reEnterPassword}
-            label={AuthModule.LABEL_RE_ENTER_PASSWORD}
-            onChangeText={(value) =>
-              handleTextInputChange(value, "reEnterPassword")
-            }
-          />
           <Button mode="contained" onPress={() => console.log("Pressed")}>
-            Submit
+            Log In
           </Button>
+            <Surface
+              mode="flat"
+              style={{
+                backgroundColor: "transparent",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                mode="text"
+                onPress={() => console.log("Pressed")}
+                labelStyle={{ color: colors.onBackground }}
+              >
+                {AuthModule.FORGOT_PASSWORD}
+              </Button>
+            </Surface>
           <Surface
             mode="flat"
             style={{
@@ -96,20 +101,15 @@ const SignUp = () => {
               justifyContent: "center",
             }}
           >
-            <Text variant="bodyMedium">{AuthModule.HAVE_AN_ACCOUNT}</Text>
-            <Pressable
-              onPress={() => {
-                router.back();
-              }}
-            >
+              <Text variant="bodyMedium">{AuthModule.NOT_HAVE_AN_ACCOUNT}</Text>
+            <Link href="/sign-up">
               <Text style={{ color: colors.primary }}>
-                {AuthModule.SIGN_IN}
+                {AuthModule.SIGN_UP_NOW}
               </Text>
-            </Pressable>
+            </Link>
           </Surface>
         </Surface>
         <Surface
-          // mode="flat"
           style={{
             backgroundColor: "white",
             height: 80,
@@ -127,4 +127,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

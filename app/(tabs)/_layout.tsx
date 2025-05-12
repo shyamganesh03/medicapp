@@ -5,11 +5,12 @@ import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useTheme } from "react-native-paper";
 
 export default function TabLayout() {
   const { colors } = useTheme();
-  console.log("object");
+
   return (
     <Tabs
       screenOptions={{
@@ -38,9 +39,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Explore",
+          title: "Profile",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <MaterialIcons color={color} size={20} name="person" />
           ),
         }}
       />

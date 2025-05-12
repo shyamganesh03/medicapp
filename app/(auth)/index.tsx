@@ -77,7 +77,7 @@ const SignIn = () => {
           <Button
             mode="contained"
             onPress={() => {
-              router.push("/(tabs)");
+              router.replace("/(tabs)");
             }}
             disabled={!loginDetails?.userName || !loginDetails?.password}
           >

@@ -12,3 +12,15 @@ export const AuthModule = {
   SIGN_UP_WELCOME_DESCRIPTION: "Sign up to continue with Medic !",
   SIGN_UP_WELCOME_TEXT: "Welcome to Medic !",
 };
+
+export const ProfileModule = {
+  OPTION_CARD_TITLE: {
+   EDIT_PROFILE:"Edit Profile",
+   MY_ORDERS:"My Orders",
+   CART:"Cart",
+   SAVED_PRODUCTS:"Saved Products",
+   PAYMENT_MANAGEMENT:"Payment Management",
+   RATE_US:"Rate Us",
+   SIGN_OUT:"Sign Out"
+  }
+}

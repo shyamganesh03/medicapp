@@ -9,6 +9,12 @@ export type ProfileMenuItemsProps = {
 
 export const profileMenuItems: ProfileMenuItemsProps[] = [
   {
+    icon_name: "",
+    title: "",
+    type: "theme-toggle",
+    href: "",
+  },
+  {
     icon_name: "person",
     title: ProfileModule.OPTION_CARD_TITLE.EDIT_PROFILE,
     type: "edit-profile",

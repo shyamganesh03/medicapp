@@ -1,3 +1,4 @@
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import {
   profileMenuItems,
   ProfileMenuItemsProps,
@@ -19,29 +20,30 @@ const renderItem = ({
   colors: MD3Colors;
   handleSelect: any;
 }) => {
-  return (
-    <TouchableOpacity onPress={() => handleSelect(item)}>
-      <Surface
-        style={{
-          flexDirection: "row",
-          padding: 20,
-          alignItems: "center",
-          gap: 16,
-          borderRadius: 16,
-
-          backgroundColor: colors.background,
-        }}
-        mode="flat"
-      >
-        <MaterialIcons
-          name={item?.icon_name}
-          size={24}
-          color={colors.secondary}
-        />
-        <Text variant="labelLarge">{item?.title}</Text>
-      </Surface>
-    </TouchableOpacity>
-  );
+  if (item.type === "theme-toggle") return <ThemeToggle />;
+  else
+    return (
+      <TouchableOpacity onPress={() => handleSelect(item)}>
+        <Surface
+          style={{
+            flexDirection: "row",
+            padding: 20,
+            alignItems: "center",
+            gap: 16,
+            borderRadius: 16,
+            backgroundColor: colors.background,
+          }}
+          mode="flat"
+        >
+          <MaterialIcons
+            name={item?.icon_name}
+            size={24}
+            color={colors.secondary}
+          />
+          <Text variant="labelLarge">{item?.title}</Text>
+        </Surface>
+      </TouchableOpacity>
+    );
 };
 
 export default function Profile() {
@@ -97,6 +99,7 @@ export default function Profile() {
           <Text variant="bodySmall">{userDetails?.email}</Text>
         </Surface>
       </Surface>
+
       <FlatList
         data={profileMenuItems}
         keyExtractor={(_, index) => `profile-edit-${index}`}
@@ -108,6 +111,7 @@ export default function Profile() {
           })
         }
         contentContainerStyle={{ gap: 16 }}
+        showsVerticalScrollIndicator={false}
       />
     </Surface>
   );

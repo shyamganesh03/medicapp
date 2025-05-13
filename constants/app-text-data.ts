@@ -21,6 +21,7 @@ export const ProfileModule = {
    SAVED_PRODUCTS:"Saved Products",
    PAYMENT_MANAGEMENT:"Payment Management",
    RATE_US:"Rate Us",
-   SIGN_OUT:"Sign Out"
+   SIGN_OUT:"Sign Out",
+   THEME: "Theme Change"
   }
 }

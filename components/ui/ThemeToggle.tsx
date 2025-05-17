@@ -20,8 +20,6 @@ const ThemeToggle = () => {
         padding: 20,
         alignItems: "center",
         borderRadius: 16,
-        backgroundColor: colors.background,
-        marginBottom: 16,
         justifyContent: "space-between",
       }}
       mode="flat"

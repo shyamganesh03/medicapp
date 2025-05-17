@@ -10,6 +10,7 @@ type UserDetails = {
   gender: string;
   home_address: string;
   profile_pic: string;
+  qrCode: string;
 };
 
 type UserStore = {
@@ -26,6 +27,8 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       userDetails: {
+        qrCode:
+          "CONTACT_NUMBER:9677316806|EMAIL:shyamganeshravichandran@gmail.com|FULL_NAME:shyam ganesh",
         contact_number: "9677316806",
         email: "shyamganeshravichandran@gmail.com",
         full_name: "shyam ganesh",

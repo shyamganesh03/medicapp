@@ -3,8 +3,8 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useMemo } from "react";
 import { DefaultTheme, MD3DarkTheme, PaperProvider } from "react-native-paper";
-
 import "react-native-reanimated";
+import Toast from "react-native-toast-message";
 
 import { Colors } from "@/constants/Colors";
 import { useThemeStore } from "@/store";
@@ -52,9 +52,14 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="qr-code-screen
+        "
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
+      <Toast />
     </PaperProvider>
   );
 }

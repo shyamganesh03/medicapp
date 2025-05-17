@@ -10,11 +10,13 @@ type UserDetails = {
   gender: string;
   home_address: string;
   profile_pic: string;
+  qrCode: string;
 };
 
 type UserStore = {
   userDetails: UserDetails;
   updateUserDetails: (fieldName: keyof UserDetails, value: string) => void;
+  createNewUser: (userDetails: any) => void;
 };
 
 type ThemeStore = {
@@ -26,6 +28,8 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       userDetails: {
+        qrCode:
+          "CONTACT_NUMBER:9677316806|EMAIL:shyamganeshravichandran@gmail.com|FULL_NAME:shyam ganesh",
         contact_number: "9677316806",
         email: "shyamganeshravichandran@gmail.com",
         full_name: "shyam ganesh",
@@ -40,6 +44,10 @@ export const useUserStore = create<UserStore>()(
             ...state.userDetails,
             [fieldName]: value,
           },
+        })),
+      createNewUser: (userDetails: any) =>
+        set((state) => ({
+          userDetails,
         })),
     }),
     {

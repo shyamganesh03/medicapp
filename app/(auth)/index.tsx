@@ -10,17 +10,35 @@ import {
 } from "react-native";
 import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 
-import { Link, useRouter } from "expo-router";
+import { validationRegex } from "@/constants/validations";
+import useAuth from "@/hooks/useAuth";
+import { Link } from "expo-router";
 import AppIcon from "../../assets/images/app-icon.png";
 
 const SignIn = () => {
   const { height, width } = Dimensions.get("screen");
   const { colors } = useTheme();
-  const router = useRouter();
+  const { isProcessing, handleSignInWithEmailAndPassword } = useAuth();
   const [loginDetails, setLoginDetails] = React.useState({
     userName: "",
     password: "",
   });
+
+  const isValidEmail = React.useMemo(
+    () => validationRegex.email.test(loginDetails?.userName),
+
+    [loginDetails.userName]
+  );
+
+  const isValidPassword = React.useMemo(
+    () => loginDetails.password.length > 5,
+    [loginDetails.password]
+  );
+
+  const canDisableCTA = React.useMemo(
+    () => !loginDetails?.userName || !loginDetails?.password,
+    [loginDetails]
+  );
 
   const handleTextInputChange = (text: string, fieldName: string) => {
     setLoginDetails((prev) => ({ ...prev, [fieldName]: text }));
@@ -69,21 +87,27 @@ const SignIn = () => {
             label={AuthModule.LABEL_USER_NAME}
             value={loginDetails?.userName}
             onChangeText={(value) => handleTextInputChange(value, "userName")}
+            error={!isValidEmail && !!loginDetails?.userName}
           />
           <PasswordTextInput
             value={loginDetails.password}
             onChangeText={(value) => handleTextInputChange(value, "password")}
+            error={!isValidPassword && !!loginDetails.password}
           />
           <Button
             mode="contained"
             onPress={() => {
-              router.replace("/(tabs)");
+              handleSignInWithEmailAndPassword(
+                loginDetails?.userName,
+                loginDetails?.password
+              );
             }}
-            disabled={!loginDetails?.userName || !loginDetails?.password}
+            disabled={canDisableCTA}
+            loading={isProcessing}
           >
             Log In
           </Button>
-          <Surface
+          {/* <Surface
             mode="flat"
             style={{
               backgroundColor: "transparent",
@@ -98,7 +122,7 @@ const SignIn = () => {
             >
               {AuthModule.FORGOT_PASSWORD}
             </Button>
-          </Surface>
+          </Surface> */}
           <Surface
             mode="flat"
             style={{

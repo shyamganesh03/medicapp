@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 
+import { validationRegex } from "@/constants/validations";
+import useAuth from "@/hooks/useAuth";
 import { useRouter } from "expo-router";
 import AppIcon from "../../assets/images/app-icon.png";
 
@@ -18,12 +20,33 @@ const SignUp = () => {
   const { height, width } = Dimensions.get("screen");
   const { colors } = useTheme();
   const router = useRouter();
+  const { isProcessing, handleSignUpWithEmailAndPassword } = useAuth();
   const [signupDetails, setSignupDetails] = React.useState({
     userName: "",
     password: "",
     reEnterPassword: "",
   });
   const [hasError, setHasError] = React.useState(false);
+
+  const isValidEmail = React.useMemo(
+    () => validationRegex.email.test(signupDetails?.userName),
+
+    [signupDetails?.userName]
+  );
+
+  const isValidPassword = React.useMemo(
+    () => signupDetails.password.length > 5,
+    [signupDetails.password]
+  );
+
+  const canEnableSubmitCTA = React.useMemo(
+    () =>
+      hasError ||
+      !signupDetails?.password ||
+      !signupDetails?.reEnterPassword ||
+      !signupDetails?.userName,
+    [hasError, signupDetails]
+  );
 
   const checkIsPasswordValid = (text: string, type: string) => {
     if (type === "password") {
@@ -87,13 +110,12 @@ const SignUp = () => {
             label={AuthModule.LABEL_USER_NAME}
             value={signupDetails?.userName}
             onChangeText={(value) => handleTextInputChange(value, "userName")}
+            error={!isValidEmail && !!signupDetails?.userName}
           />
           <PasswordTextInput
             value={signupDetails.password}
-            error={
-              signupDetails?.password?.length < 4 && !!signupDetails?.password
-            }
             onChangeText={(value) => handleTextInputChange(value, "password")}
+            error={!isValidPassword && !!signupDetails.password}
           />
           <PasswordTextInput
             value={signupDetails.reEnterPassword}
@@ -110,13 +132,14 @@ const SignUp = () => {
           />
           <Button
             mode="contained"
-            onPress={() => console.log("Pressed")}
-            disabled={
-              hasError ||
-              !signupDetails?.password ||
-              !signupDetails?.reEnterPassword ||
-              !signupDetails?.userName
-            }
+            onPress={() => {
+              handleSignUpWithEmailAndPassword(
+                signupDetails?.userName,
+                signupDetails?.password
+              );
+            }}
+            disabled={canEnableSubmitCTA}
+            loading={isProcessing}
           >
             Submit
           </Button>

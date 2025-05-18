@@ -39,7 +39,7 @@ const renderItem = ({
           <MaterialIcons
             name={item?.icon_name}
             size={24}
-            color={colors.onSecondary}
+            color={colors.secondary}
           />
           <Text variant="labelLarge">{item?.title}</Text>
         </Surface>
@@ -119,13 +119,13 @@ export default function Profile() {
                 <Text variant="bodySmall">{userDetails?.contact_number}</Text>
                 <Text variant="bodySmall">{userDetails?.email}</Text>
               </Surface>
-              <TouchableOpacity onPress={() => router.push("/qr-code-screen")}>
+              {/* <TouchableOpacity onPress={() => router.push("/qr-code-screen")}>
                 <MaterialIcons
                   name="qr-code-scanner"
                   size={24}
                   color={colors.secondary}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </Surface>
           </Surface>
         }

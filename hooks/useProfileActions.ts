@@ -4,12 +4,11 @@ import useAuth from "./useAuth";
 
 const useProfileActions = () => {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { handleLogOut } = useAuth();
 
   const handleProfileOptions = async (option: ProfileMenuItemsProps) => {
     if (option.type === "sign-out") {
-      await logout();
-      router.replace("/(auth)");
+      await handleLogOut();
     }
   };
 

@@ -5,10 +5,11 @@ const useFireBase = () => {
 
   const createNewUser = async (userDetails: any) => {
     const result = await usersCollection
-      .doc(userDetails?.id)
+      .doc(userDetails?.uid)
       .set(userDetails)
       .catch((error) => {
-        console.log("error on create new user: ", userDetails);
+        console.log("error on create new user: ", error);
+        return { success: false };
       });
     return result;
   };
@@ -17,7 +18,8 @@ const useFireBase = () => {
     const result = await usersCollection.doc(userID).get();
     return { result };
   };
-  return { createNewUser };
+
+  return { createNewUser, getCurrentUserDetails };
 };
 
 export default useFireBase;

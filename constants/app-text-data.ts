@@ -3,7 +3,7 @@ export const AuthModule = {
   HAVE_AN_ACCOUNT: "have an account ?",
   LABEL_PASSWORD: "Password",
   LABEL_RE_ENTER_PASSWORD: "Re-Enter Password",
-  LABEL_USER_NAME: "Username",
+  LABEL_USER_NAME: "User name",
   NOT_HAVE_AN_ACCOUNT: "Don't have an account ?",
   SIGN_IN_WELCOME_DESCRIPTION: "Sign in to continue with Medic !",
   SIGN_IN_WELCOME_TEXT: "Welcome Back !",

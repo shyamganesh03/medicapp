@@ -23,6 +23,7 @@ const InputText = ({
       onChangeText={onChangeText}
       mode="outlined"
       theme={{ roundness: 20 }}
+      error={error}
     />
   );
 };

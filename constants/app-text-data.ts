@@ -25,4 +25,13 @@ export const ProfileModule = {
     SIGN_OUT: "Sign Out",
     THEME: "Theme Change",
   },
+  EDIT_PROFILE: {
+    TEXT_INPUT_LABEL: {
+      FULL_NAME: "Full Name",
+      EMAIL_ID: "Email",
+      CONTACT_NO: "Contact Number",
+      ADDRESS: "Address",
+    },
+    SAVE_CTA: "Save",
+  },
 };

@@ -19,7 +19,21 @@ const useFireBase = () => {
     return { result };
   };
 
-  return { createNewUser, getCurrentUserDetails };
+  const updateUserDetails = async (userID: string, userDetails: any) => {
+    const result = await usersCollection
+      .doc(userID)
+      .update(userDetails)
+      .then(() => {
+        return { success: true };
+      })
+      .catch((error) => {
+        console.log("error on update user details: ", error);
+        return { success: false };
+      });
+    return result;
+  };
+
+  return { createNewUser, getCurrentUserDetails, updateUserDetails };
 };
 
 export default useFireBase;

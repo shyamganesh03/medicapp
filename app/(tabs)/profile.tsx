@@ -1,3 +1,4 @@
+import ProfilePic from "@/components/ui/ProfilePic";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import {
   profileMenuItems,
@@ -9,7 +10,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
-import { Avatar, Surface, Text, useTheme } from "react-native-paper";
+import { Surface, Text, useTheme } from "react-native-paper";
 import { MD3Colors } from "react-native-paper/lib/typescript/types";
 
 const renderItem = ({
@@ -75,38 +76,7 @@ export default function Profile() {
                 backgroundColor: "transparent",
               }}
             >
-              {userDetails?.profile_pic ? (
-                <Surface
-                  style={{
-                    height: 80,
-                    width: 80,
-                    borderRadius: 40,
-                    overflow: "hidden",
-                  }}
-                  mode="flat"
-                >
-                  <Avatar.Image
-                    size={80}
-                    source={{ uri: userDetails?.profile_pic }}
-                  />
-                </Surface>
-              ) : (
-                <Surface
-                  style={{
-                    backgroundColor: "white",
-                    height: 80,
-                    width: 80,
-                    borderRadius: 40,
-                  }}
-                  mode="flat"
-                >
-                  <MaterialIcons
-                    name="account-circle"
-                    size={80}
-                    color={colors.primaryContainer}
-                  />
-                </Surface>
-              )}
+              <ProfilePic userDetails={userDetails} />
               <Surface
                 mode="flat"
                 style={{
@@ -115,9 +85,15 @@ export default function Profile() {
                   backgroundColor: "transparent",
                 }}
               >
-                <Text variant="titleLarge">{userDetails?.full_name}</Text>
-                <Text variant="bodySmall">{userDetails?.contact_number}</Text>
-                <Text variant="bodySmall">{userDetails?.email}</Text>
+                {userDetails.full_name && (
+                  <Text variant="titleLarge">{userDetails.full_name}</Text>
+                )}
+                {userDetails.contact_number && (
+                  <Text variant="bodySmall">{userDetails.contact_number}</Text>
+                )}
+                {userDetails.email && (
+                  <Text variant="bodySmall">{userDetails.email}</Text>
+                )}
               </Surface>
               {/* <TouchableOpacity onPress={() => router.push("/qr-code-screen")}>
                 <MaterialIcons

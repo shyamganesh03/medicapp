@@ -1,9 +1,11 @@
 // store.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ICountry } from "react-native-international-phone-number";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-type UserDetails = {
+export type UserDetails = {
+  country_code: ICountry;
   contact_number: string;
   email: string;
   full_name: string;
@@ -16,10 +18,11 @@ type UserDetails = {
 
 type UserStore = {
   userDetails: UserDetails;
-  updateUserZustandDetails: (
+  updateZustandUserDetailsField: (
     fieldName: keyof UserDetails,
     value: string
   ) => void;
+  updateZustandUserDetails: (value: UserDetails) => void;
   createNewZustandUser: (userDetails: any) => void;
 };
 
@@ -39,13 +42,50 @@ export const useUserStore = create<UserStore>()(
         home_address: "",
         profile_pic: "",
         qrCode: "",
-        uid:"",
+        uid: "",
+        country_code: {
+          callingCode: "+91",
+          cca2: "IN",
+          flag: "🇮🇳",
+          name: {
+            bg: "Индия",
+            by: "Індыя",
+            cn: "印度",
+            cz: "Indie",
+            de: "Indien",
+            ee: "India",
+            el: "Ινδία",
+            en: "India",
+            ar: "الهند",
+            es: "India",
+            fr: "Inde",
+            he: "הוֹדוּ",
+            it: "India",
+            jp: "インド",
+            nl: "India",
+            pl: "Indie",
+            pt: "Índia",
+            ro: "India",
+            ru: "Индия",
+            ua: "Індія",
+            zh: "印度",
+            tr: "Hindistan",
+          },
+          phoneMasks: ["#### ### ###"],
+        },
       },
-      updateUserZustandDetails: (fieldName, value) =>
+      updateZustandUserDetailsField: (fieldName, value) =>
         set((state) => ({
           userDetails: {
             ...state.userDetails,
             [fieldName]: value,
+          },
+        })),
+      updateZustandUserDetails: (value: any) =>
+        set((state) => ({
+          userDetails: {
+            ...state.userDetails,
+            ...value,
           },
         })),
       createNewZustandUser: (userDetails: any) =>

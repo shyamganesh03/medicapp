@@ -6,7 +6,8 @@ type InputTextProps = {
   value: string;
   onChangeText: (text: string) => void;
   error?: boolean;
-  helperText?: string;
+  multiline?: boolean;
+  numberOfLines?: number | undefined;
 };
 
 const InputText = ({
@@ -14,7 +15,8 @@ const InputText = ({
   value,
   onChangeText,
   error = false,
-  helperText = "",
+  multiline = false,
+  numberOfLines,
 }: InputTextProps) => {
   return (
     <TextInput
@@ -24,6 +26,8 @@ const InputText = ({
       mode="outlined"
       theme={{ roundness: 20 }}
       error={error}
+      multiline={multiline}
+      numberOfLines={numberOfLines}
     />
   );
 };

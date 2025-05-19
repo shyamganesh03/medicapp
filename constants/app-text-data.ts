@@ -35,3 +35,10 @@ export const ProfileModule = {
     SAVE_CTA: "Save",
   },
 };
+
+export const HomeModule = {
+  SEARCH_BAR_LABEL: "Search for medicines, health products, etc.",
+  SECTION_TITLES: {
+    TOP_CATEGORIES: "Top Categories",
+  },
+};

@@ -13,7 +13,7 @@ import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 import { validationRegex } from "@/constants/validations";
 import useAuth from "@/hooks/useAuth";
 import { Link } from "expo-router";
-import AppIcon from "../../assets/images/app-icon.png";
+import AppIcon from "@/assets/images/app-icon.png";
 
 const SignIn = () => {
   const { height, width } = Dimensions.get("screen");

@@ -56,6 +56,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="qr-code-screen" />
         <Stack.Screen name="edit-profile" />
+        <Stack.Screen name="medicines" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

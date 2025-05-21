@@ -1,7 +1,8 @@
 import SearchTextInput from "@/components/ui/SearchTextInput";
 import { HomeModule } from "@/constants/app-text-data";
 import useFireBase from "@/hooks/useFirebase";
-import { useEffect, useState } from "react";
+import { router } from "expo-router";
+import { useEffect } from "react";
 import {
   Dimensions,
   FlatList,
@@ -58,8 +59,8 @@ const RenderCategoryItemSkeleton = ({
 }) => {
   return (
     <SkeletonPlaceholder
-      highlightColor={colors.onPrimary}
-      backgroundColor={colors.primary}
+      highlightColor={colors.onPrimaryContainer}
+      backgroundColor={colors.primaryContainer}
     >
       <SkeletonPlaceholder.Item
         width={width / 2 - 32}
@@ -73,21 +74,12 @@ const RenderCategoryItemSkeleton = ({
 
 export default function HomeScreen() {
   const { height, width } = Dimensions.get("screen");
-  const { uploadMedicines, getMedicinesCategoriesList } = useFireBase();
+  const { categoryList, isFetching, getMedicinesCategoriesList } =
+    useFireBase();
   const { colors } = useTheme();
-  const [medicinesCategoriesList, setMedicinesCategoriesList] = useState();
-  const [isFetching, setIsFetching] = useState(false);
-
-  const getMedicinesCategories = async () => {
-    setIsFetching(true);
-    const medicinesCategories = await getMedicinesCategoriesList({ limit: 4 });
-    setMedicinesCategoriesList(medicinesCategories);
-    setIsFetching(false);
-  };
 
   useEffect(() => {
-    // uploadMedicines();
-    getMedicinesCategories();
+    getMedicinesCategoriesList({ limit: 4 });
   }, []);
 
   return (
@@ -134,13 +126,15 @@ export default function HomeScreen() {
               />
             ) : (
               <FlatList
-                data={medicinesCategoriesList}
+                data={categoryList}
                 renderItem={({ item }) => (
                   <RenderCategoryItem
                     item={item}
                     colors={colors}
                     width={width}
-                    handlePress={() => {}}
+                    handlePress={() => {
+                      router.push(`/medicines/category/${item?.name}`);
+                    }}
                   />
                 )}
                 keyExtractor={(item) => item?.id}

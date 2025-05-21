@@ -32,12 +32,12 @@ export const profileMenuItems: ProfileMenuItemsProps[] = [
     type: "cart",
     href: "",
   },
-  {
-    icon_name: "favorite",
-    title: ProfileModule.OPTION_CARD_TITLE.SAVED_PRODUCTS,
-    type: "saved-products-list",
-    href: "",
-  },
+  // {
+  //   icon_name: "favorite",
+  //   title: ProfileModule.OPTION_CARD_TITLE.SAVED_PRODUCTS,
+  //   type: "saved-products-list",
+  //   href: "",
+  // },
   {
     icon_name: "payments",
     title: ProfileModule.OPTION_CARD_TITLE.PAYMENT_MANAGEMENT,

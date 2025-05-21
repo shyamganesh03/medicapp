@@ -42,3 +42,7 @@ export const HomeModule = {
     TOP_CATEGORIES: "Top Categories",
   },
 };
+
+export const MedicineModule = {
+  ADD_CTA: "Add",
+};

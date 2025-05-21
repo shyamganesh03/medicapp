@@ -1,10 +1,15 @@
 import firestore from "@react-native-firebase/firestore";
+import { useState } from "react";
 import uuid from "react-native-uuid";
 
 const useFireBase = () => {
   const usersCollection = firestore().collection("Users");
   const medicineTypeCollection = firestore().collection("Medicines_Types");
   const medicinesCollection = firestore().collection("Medicines");
+  const [isFetchingCategoryList, setIsFetchingCategoryList] = useState(false);
+  const [categoryList, setCategoryList] = useState<any>([]);
+  const [medicinesList, setMedicinesList] = useState<any>([]);
+  const [isFetchingMedicinesList, setIsFetchingMedicinesList] = useState(false);
 
   const uploadMedicines = async () => {
     try {
@@ -58,6 +63,7 @@ const useFireBase = () => {
     limit?: number;
   }) => {
     try {
+      setIsFetchingCategoryList(true);
       const medicinesCollection = limit
         ? medicineTypeCollection.limit(limit)
         : medicineTypeCollection;
@@ -66,28 +72,40 @@ const useFireBase = () => {
       result.forEach((doc) => {
         medicinesList.push(doc.data());
       });
-      console.log("medicinesList: --> ", medicinesList);
-      return medicinesList;
+      setIsFetchingCategoryList(false);
+      setCategoryList(medicinesList);
     } catch (error) {
+      setIsFetchingCategoryList(false);
       console.error("Error fetching medicines categories:", error);
       return [];
     }
   };
 
-  const getMedicinesListByCategory = async (category: string) => {
+  const getMedicinesListByCategory = async (category: string | string[]) => {
     try {
-      const medicinesList = await medicinesCollection
-        .where("type", "==", category)
-        .get();
-      console.log("medicinesList: --> ", medicinesList);
-      // return medicinesList;
+      setIsFetchingMedicinesList(true);
+      const medicinesList =
+        category === "All"
+          ? await medicinesCollection.get()
+          : await medicinesCollection.where("type", "==", category).get();
+      const finalAArr: any[] = [];
+      medicinesList.forEach((doc) => {
+        finalAArr.push(doc.data());
+      });
+      setIsFetchingMedicinesList(false);
+      setMedicinesList(finalAArr);
     } catch (error) {
+      setIsFetchingMedicinesList(false);
       console.error("Error fetching medicines categories:", error);
       return [];
     }
   };
 
   return {
+    categoryList,
+    isFetchingCategoryList,
+    isFetchingMedicinesList,
+    medicinesList,
     createNewUser,
     getCurrentUserDetails,
     getMedicinesListByCategory,

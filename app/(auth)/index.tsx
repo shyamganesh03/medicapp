@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 
+import AppIcon from "@/assets/images/app-icon.png";
 import { validationRegex } from "@/constants/validations";
 import useAuth from "@/hooks/useAuth";
 import { Link } from "expo-router";
-import AppIcon from "@/assets/images/app-icon.png";
 
 const SignIn = () => {
   const { height, width } = Dimensions.get("screen");
@@ -105,7 +105,7 @@ const SignIn = () => {
             disabled={canDisableCTA}
             loading={isProcessing}
           >
-            Log In
+            {AuthModule.SIGN_IN}
           </Button>
           {/* <Surface
             mode="flat"

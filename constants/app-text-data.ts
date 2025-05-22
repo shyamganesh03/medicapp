@@ -34,6 +34,7 @@ export const ProfileModule = {
     },
     SAVE_CTA: "Save",
   },
+  COMING_SOON: "Coming Soon",
 };
 
 export const HomeModule = {

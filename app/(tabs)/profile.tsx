@@ -1,5 +1,6 @@
 import ProfilePic from "@/components/ui/ProfilePic";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { ProfileModule } from "@/constants/app-text-data";
 import {
   profileMenuItems,
   ProfileMenuItemsProps,
@@ -26,7 +27,11 @@ const renderItem = ({
   if (item.type === "theme-toggle") return <ThemeToggle />;
   else
     return (
-      <TouchableOpacity onPress={() => handleSelect(item)}>
+      <TouchableOpacity
+        onPress={() => handleSelect(item)}
+        disabled={item?.isComingSoon}
+        style={{ opacity: item?.isComingSoon ? 0.5 : 1 }}
+      >
         <Surface
           style={{
             flexDirection: "row",
@@ -34,15 +39,27 @@ const renderItem = ({
             alignItems: "center",
             gap: 16,
             borderRadius: 16,
+            justifyContent: "space-between",
           }}
           mode="flat"
         >
-          <MaterialIcons
-            name={item?.icon_name}
-            size={24}
-            color={colors.secondary}
-          />
-          <Text variant="labelLarge">{item?.title}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 16,
+            }}
+          >
+            <MaterialIcons
+              name={item?.icon_name}
+              size={24}
+              color={colors.secondary}
+            />
+            <Text variant="labelLarge">{item?.title}</Text>
+          </View>
+          {item?.isComingSoon && (
+            <Text variant="bodySmall">{ProfileModule?.COMING_SOON}</Text>
+          )}
         </Surface>
       </TouchableOpacity>
     );

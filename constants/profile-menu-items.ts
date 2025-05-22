@@ -5,6 +5,7 @@ export type ProfileMenuItemsProps = {
   title: string;
   type: string;
   href?: string | undefined;
+  isComingSoon?: boolean;
 };
 
 export const profileMenuItems: ProfileMenuItemsProps[] = [
@@ -25,12 +26,14 @@ export const profileMenuItems: ProfileMenuItemsProps[] = [
     title: ProfileModule.OPTION_CARD_TITLE.MY_ORDERS,
     type: "my-order-list",
     href: "",
+    isComingSoon: true,
   },
   {
     icon_name: "trolley",
     title: ProfileModule.OPTION_CARD_TITLE.CART,
     type: "cart",
     href: "",
+    isComingSoon: true,
   },
   // {
   //   icon_name: "favorite",
@@ -43,12 +46,14 @@ export const profileMenuItems: ProfileMenuItemsProps[] = [
     title: ProfileModule.OPTION_CARD_TITLE.PAYMENT_MANAGEMENT,
     type: "payment-management",
     href: "",
+    isComingSoon: true,
   },
   {
     icon_name: "star-rate",
     title: ProfileModule.OPTION_CARD_TITLE.RATE_US,
     type: "rate-us",
     href: "",
+    isComingSoon: true,
   },
   {
     icon_name: "logout",

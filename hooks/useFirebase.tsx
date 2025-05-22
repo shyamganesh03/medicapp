@@ -8,8 +8,11 @@ const useFireBase = () => {
   const medicinesCollection = firestore().collection("Medicines");
   const [isFetchingCategoryList, setIsFetchingCategoryList] = useState(false);
   const [categoryList, setCategoryList] = useState<any>([]);
-  const [medicinesList, setMedicinesList] = useState<any>([]);
   const [isFetchingMedicinesList, setIsFetchingMedicinesList] = useState(false);
+  const [medicinesList, setMedicinesList] = useState<any>([]);
+  const [isFetchingMedicinesDetails, setIsFetchingMedicinesDetails] =
+    useState(false);
+  const [medicinesDetails, setMedicinesDetails] = useState<any>([]);
 
   const uploadMedicines = async () => {
     try {
@@ -97,7 +100,18 @@ const useFireBase = () => {
     } catch (error) {
       setIsFetchingMedicinesList(false);
       console.error("Error fetching medicines categories:", error);
-      return [];
+    }
+  };
+
+  const getMedicineDetails = async (medicineID: string) => {
+    try {
+      setIsFetchingMedicinesDetails(true);
+      const result = await medicinesCollection.doc(medicineID).get();
+      setMedicinesDetails(result.data());
+      setIsFetchingMedicinesDetails(false);
+    } catch (error) {
+      setIsFetchingMedicinesDetails(false);
+      console.error("Error fetching medicines details:", error);
     }
   };
 
@@ -105,11 +119,14 @@ const useFireBase = () => {
     categoryList,
     isFetchingCategoryList,
     isFetchingMedicinesList,
+    isFetchingMedicinesDetails,
+    medicinesDetails,
     medicinesList,
     createNewUser,
     getCurrentUserDetails,
-    getMedicinesListByCategory,
     getMedicinesCategoriesList,
+    getMedicineDetails,
+    getMedicinesListByCategory,
     updateUserDetails,
     uploadMedicines,
   };

@@ -3,7 +3,7 @@ import useFireBase from "@/hooks/useFirebase";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { Surface, Text, useTheme } from "react-native-paper";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
@@ -88,7 +88,6 @@ const CategoryHorizontalScroll = ({
 };
 
 const MedicineCategoryScreen = () => {
-  const { height, width } = Dimensions.get("screen");
   const { category } = useLocalSearchParams();
   const [selectedCategory, setSelectedCategory] = React.useState<
     string | string[]
@@ -158,7 +157,10 @@ const MedicineCategoryScreen = () => {
             renderItem={({ item }) => (
               <MedicineCard
                 item={item}
-                handleOnPress={() => {}}
+                handleOnPress={() =>
+                  // @ts-ignore
+                  router.push(`/medicines/${item?.unique_id}`)
+                }
                 isFetching={isFetchingCategoryList}
               />
             )}

@@ -8,6 +8,7 @@ type InputTextProps = {
   error?: boolean;
   multiline?: boolean;
   numberOfLines?: number | undefined;
+  disabled?: boolean;
 };
 
 const InputText = ({
@@ -17,6 +18,7 @@ const InputText = ({
   error = false,
   multiline = false,
   numberOfLines,
+  disabled = false,
 }: InputTextProps) => {
   return (
     <TextInput
@@ -28,6 +30,7 @@ const InputText = ({
       error={error}
       multiline={multiline}
       numberOfLines={numberOfLines}
+      disabled={disabled}
     />
   );
 };

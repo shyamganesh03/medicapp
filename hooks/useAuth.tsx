@@ -82,7 +82,23 @@ const useAuth = () => {
     });
     if (authResult?.user) {
       const userDetails = await getCurrentUserDetails(authResult?.user?.uid);
-      createNewZustandUser(userDetails?.result?._data);
+      const userData = userDetails?.result?.data();
+      const newUserDetails = {
+        contact_number: userData?.contact_number,
+        email: userData?.email,
+        full_name: userData?.full_name,
+        gender: "",
+        home_address: "",
+        profile_pic: "",
+        qrCode: "",
+        uid: userData?.uid,
+        country_code: userData?.country_code,
+        is_admin: false,
+        is_email_verified: userData?.emailVerified,
+        is_new_user: userData?.isNewUser,
+        is_phone_verified: false,
+      };
+      createNewZustandUser(newUserDetails);
       router.replace("/(tabs)");
     }
   };

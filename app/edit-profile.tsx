@@ -1,6 +1,6 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -54,10 +54,14 @@ const Header = ({ colors }: { colors: MD3Colors }) => {
 const EditProfile = () => {
   const { height, width } = Dimensions.get("screen");
   const userDetails = useUserStore((state) => state.userDetails);
-  const [profileDetails, setProfileDetails] = React.useState(userDetails);
+  const [profileDetails, setProfileDetails] = React.useState<any>();
   const { isProcessing, handleProfileUpdate } = useProfileActions();
 
   const { colors } = useTheme();
+
+  useEffect(() => {
+    setProfileDetails(userDetails);
+  }, [userDetails]);
 
   return (
     <KeyboardAvoidingView
@@ -96,6 +100,7 @@ const EditProfile = () => {
             onChangeText={(value) =>
               setProfileDetails({ ...profileDetails, email: value })
             }
+            disabled
           />
           <PhoneInput
             value={profileDetails?.contact_number}
@@ -118,9 +123,16 @@ const EditProfile = () => {
               container: {
                 borderRadius: 16,
                 overflow: "hidden",
+                backgroundColor: colors.background,
+              },
+              callingCode: {
+                color: colors.onSecondaryContainer,
               },
               flagContainer: {
                 backgroundColor: colors.secondaryContainer,
+              },
+              input: {
+                color: colors.onBackground,
               },
             }}
           />

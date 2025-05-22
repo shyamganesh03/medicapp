@@ -74,7 +74,7 @@ const RenderCategoryItemSkeleton = ({
 
 export default function HomeScreen() {
   const { height, width } = Dimensions.get("screen");
-  const { categoryList, isFetching, getMedicinesCategoriesList } =
+  const { categoryList, isFetchingCategoryList, getMedicinesCategoriesList } =
     useFireBase();
   const { colors } = useTheme();
 
@@ -111,7 +111,7 @@ export default function HomeScreen() {
             <Text variant="titleLarge">
               {HomeModule.SECTION_TITLES.TOP_CATEGORIES}
             </Text>
-            {isFetching ? (
+            {isFetchingCategoryList ? (
               <FlatList
                 data={[0, 1, 2, 3]}
                 renderItem={() => (

@@ -28,7 +28,7 @@ const ProfilePic = ({
       ) : (
         <Surface
           style={{
-            backgroundColor: "white",
+            backgroundColor: colors.surfaceVariant,
             height: 80,
             width: 80,
             borderRadius: 40,
@@ -38,7 +38,7 @@ const ProfilePic = ({
           <MaterialIcons
             name="account-circle"
             size={80}
-            color={colors.primaryContainer}
+            color={colors.onSurfaceVariant}
           />
         </Surface>
       )}
@@ -47,14 +47,18 @@ const ProfilePic = ({
           onPress={() => {}}
           style={{
             position: "absolute",
-            top: 60,
-            left: 48,
-            backgroundColor: colors?.background,
+            backgroundColor: colors?.inverseSurface,
             padding: 4,
             borderRadius: 16,
+            bottom: 0,
+            right: 10,
           }}
         >
-          <MaterialIcons name="edit" />
+          <MaterialIcons
+            name="edit"
+            color={colors.inverseOnSurface}
+            size={12}
+          />
         </Pressable>
       )}
     </View>

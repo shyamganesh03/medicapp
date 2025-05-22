@@ -5,12 +5,16 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export type UserDetails = {
-  country_code: ICountry;
   contact_number: string;
+  country_code: ICountry;
   email: string;
   full_name: string;
   gender: string;
   home_address: string;
+  is_admin: boolean;
+  is_email_verified: boolean;
+  is_new_user: boolean;
+  is_phone_verified: boolean;
   profile_pic: string;
   qrCode: string;
   uid: string;
@@ -35,14 +39,6 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       userDetails: {
-        contact_number: "",
-        email: "",
-        full_name: "",
-        gender: "",
-        home_address: "",
-        profile_pic: "",
-        qrCode: "",
-        uid: "",
         country_code: {
           callingCode: "+91",
           cca2: "IN",
@@ -73,6 +69,18 @@ export const useUserStore = create<UserStore>()(
           },
           phoneMasks: ["#### ### ###"],
         },
+        contact_number: "",
+        is_admin: false,
+        is_email_verified: false,
+        is_new_user: false,
+        is_phone_verified: false,
+        email: "",
+        full_name: "",
+        gender: "",
+        home_address: "",
+        profile_pic: "",
+        qrCode: "",
+        uid: "",
       },
       updateZustandUserDetailsField: (fieldName, value) =>
         set((state) => ({

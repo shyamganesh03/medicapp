@@ -14,6 +14,8 @@ const SearchTextInput = ({ placeholder: label }: SearchTextInputProps) => {
       onChangeText={setSearchQuery}
       value={searchQuery}
       style={{ paddingRight: 12 }}
+      numberOfLines={1}
+      autoCapitalize="none"
     />
   );
 };

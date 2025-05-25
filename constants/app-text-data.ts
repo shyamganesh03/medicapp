@@ -47,9 +47,12 @@ export const HomeModule = {
 export const MedicineModule = {
   ADD_CTA: "Add",
   ADD_TO_CART: "Add to Cart",
+  READ_MORE: "Read Mode",
+  READ_LESS:" Read Less",
   DETAILS_SCREEN: {
-    COST: "Cost",
     AVAILABLE_STOCK: "Available Stock",
+    COST: "Cost",
+    ABOUT: "About",
     RATINGS: "Ratings",
   },
 };

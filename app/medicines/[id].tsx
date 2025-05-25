@@ -7,6 +7,33 @@ import React, { useEffect } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 
+const ProductDescription = ({ description }: { description: string }) => {
+  const [cansShowMore, setCanShowMore] = React.useState(false);
+  const { colors } = useTheme();
+
+  return (
+    <View style={{ gap: 4 }}>
+      <Text variant="bodyLarge" numberOfLines={!cansShowMore ? 4 : 0}>
+        {description || "-"}
+      </Text>
+      {description?.length > 172 && (
+        <TouchableOpacity onPress={() => setCanShowMore(!cansShowMore)}>
+          <Text
+            variant="bodyLarge"
+            numberOfLines={4}
+            style={{
+              textDecorationLine: "underline",
+              color: colors.primary,
+            }}
+          >
+            {cansShowMore ? MedicineModule.READ_LESS : MedicineModule.READ_MORE}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+};
+
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams();
 
@@ -15,6 +42,7 @@ const ProductDetailsScreen = () => {
     useFireBase();
 
   const router = useRouter();
+  const description = `Pain relievers are medicines that reduce or relieve headaches, sore muscles, arthritis, or other aches and pains. There are many different pain medicines, and each with advantages and risks. Some types of pain respond better to certain medicines than others. Each person may also have a slightly different response to a pain reliever. Pain relievers are medicines that reduce or relieve headaches, sore muscles, arthritis, or other aches and pains. There are many different pain medicines, and each with advantages and risks. Some types of pain respond better to certain medicines than others. Each person may also have a slightly different response to a pain reliever.  Pain relievers are medicines that reduce or relieve headaches, sore muscles, arthritis, or other aches and pains. There are many different pain medicines, and each with advantages and risks. Some types of pain respond better to certain medicines than others. Each person may also have a slightly different response to a pain reliever. Pain relievers are medicines that reduce or relieve headaches, sore muscles, arthritis, or other aches and pains. There are many different pain medicines, and each with advantages and risks. Some types of pain respond better to certain medicines than others. Each person may also have a slightly different response to a pain reliever.`;
 
   useEffect(() => {
     if (id) {
@@ -24,7 +52,7 @@ const ProductDetailsScreen = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flex: 1, flexGrow: 1 }}
+      contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
       <View
@@ -138,6 +166,12 @@ const ProductDetailsScreen = () => {
               </Text>
             </View>
           </View>
+        </View>
+        <View style={{ gap: 8, marginTop: 16 }}>
+          <Text variant="labelLarge">
+            {MedicineModule.DETAILS_SCREEN.ABOUT}
+          </Text>
+          <ProductDescription description={description} />
         </View>
         <View
           style={{

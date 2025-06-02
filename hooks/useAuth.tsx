@@ -1,7 +1,7 @@
+import { create_new_user } from "@/api/auth_api";
 import { useUserStore } from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
   signOut,
@@ -13,7 +13,7 @@ import useFireBase from "./useFirebase";
 
 const useAuth = () => {
   const auth = getAuth();
-  const { createNewUser, getCurrentUserDetails } = useFireBase();
+  const { getCurrentUserDetails } = useFireBase();
   const { createNewZustandUser } = useUserStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
@@ -22,43 +22,17 @@ const useAuth = () => {
     email: string,
     password: string
   ) => {
+    console.log("email worked: ");
     setIsProcessing(true);
-    const authResult: any = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    ).catch((error) => {
-      setIsProcessing(false);
-      if (error.code === "auth/email-already-in-use") {
-        Toast.show({
-          type: "error",
-          text2: "User name has been already taken.",
-        });
-      }
-      console.log("error: ", error.json(), typeof error);
-      return error;
-    });
-    if (authResult?.user) {
-      const userDetails = {
-        isNewUser: authResult?.additionalUserInfo?.isNewUser,
-        uid: authResult?.user?._user?.uid,
-        email: authResult?.user?._user?.email,
-        emailVerified: authResult?.user?._user?.emailVerified,
-        metaData: authResult?.user?._user?.metadata,
-        fullName: "",
-        contactNo: "",
-        countryCode: "",
-        qrCode: "",
-      };
-      createNewUser(userDetails).then((result) => {
-        if (!result?.success) {
-          setIsProcessing(false);
-        } else {
-          createNewZustandUser(userDetails);
-          setIsProcessing(false);
-        }
+    const canSignedUpSuccessfully = await create_new_user(email, password);
+    if (canSignedUpSuccessfully) {
+      router.push({ pathname: "/(auth)", params: { email } });
+      Toast.show({
+        type: "success",
+        text2: "Medic account has been created successfully.",
       });
     }
+    setIsProcessing(false);
   };
 
   const handleSignInWithEmailAndPassword = async (

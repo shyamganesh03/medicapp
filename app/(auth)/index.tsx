@@ -13,12 +13,14 @@ import { Avatar, Button, Surface, Text, useTheme } from "react-native-paper";
 import AppIcon from "@/assets/images/app-icon.png";
 import { validationRegex } from "@/constants/validations";
 import useAuth from "@/hooks/useAuth";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 
 const SignIn = () => {
   const { height, width } = Dimensions.get("screen");
   const { colors } = useTheme();
   const { isProcessing, handleSignInWithEmailAndPassword } = useAuth();
+  const params = useLocalSearchParams();
+  console.log("params: ", params);
   const [loginDetails, setLoginDetails] = React.useState({
     userName: "",
     password: "",

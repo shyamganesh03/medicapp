@@ -1,13 +1,14 @@
-import SearchTextInput from "@/components/ui/SearchTextInput";
 import { HomeModule } from "@/constants/app-text-data";
-import useFireBase from "@/hooks/useFirebase";
+import useProducts from "@/hooks/useProducts";
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   ScrollView,
   TouchableOpacity,
   View,
@@ -33,12 +34,13 @@ const RenderCategoryItem = ({
         style={{
           alignItems: "center",
           borderRadius: 16,
-          height: 100,
           justifyContent: "center",
           marginVertical: 8,
           padding: 20,
           width: width / 2 - 32,
           backgroundColor: colors.primary,
+          flex: 1,
+          minHeight: 100,
         }}
         mode="flat"
       >
@@ -75,12 +77,19 @@ const RenderCategoryItemSkeleton = ({
 export default function HomeScreen() {
   const { height, width } = Dimensions.get("screen");
   const { categoryList, isFetchingCategoryList, getMedicinesCategoriesList } =
-    useFireBase();
+    useProducts();
+  const [isRefresh, setIsRefresh] = useState(false);
   const { colors } = useTheme();
 
   useEffect(() => {
-    getMedicinesCategoriesList({ limit: 4 });
+    categoryList?.length === 0 && getMedicinesCategoriesList({ limit: 4 });
   }, []);
+
+  const onRefresh = async () => {
+    setIsRefresh(true);
+    await getMedicinesCategoriesList({ limit: 4 });
+    setIsRefresh(false);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -94,6 +103,9 @@ export default function HomeScreen() {
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
+        refreshControl={
+          <RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />
+        }
       >
         <Surface
           style={{
@@ -104,9 +116,9 @@ export default function HomeScreen() {
           }}
           mode="flat"
         >
-          <View>
+          {/* <View>
             <SearchTextInput placeholder={HomeModule.SEARCH_BAR_LABEL} />
-          </View>
+          </View> */}
           <View style={{ flex: 1, gap: 16, marginVertical: 16 }}>
             <Text variant="titleLarge">
               {HomeModule.SECTION_TITLES.TOP_CATEGORIES}
@@ -133,7 +145,7 @@ export default function HomeScreen() {
                     colors={colors}
                     width={width}
                     handlePress={() => {
-                      router.push(`/medicines/category/${item?.name}`);
+                      router.push(`/medicines/category/${item?.id}`);
                     }}
                   />
                 )}
@@ -148,6 +160,7 @@ export default function HomeScreen() {
           </View>
         </Surface>
       </ScrollView>
+      <StatusBar style="dark" />
     </KeyboardAvoidingView>
   );
 }

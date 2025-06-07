@@ -6,7 +6,7 @@ import { Button, Surface, Text, useTheme } from "react-native-paper";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import ImageComponent from "./ImageComponent";
 
-const MedicineCard = ({
+const ProductCard = ({
   isFetching = false,
   item,
   handleOnPress = () => {},
@@ -43,7 +43,7 @@ const MedicineCard = ({
               variant="bodyLarge"
               style={{ color: colors.onSurfaceVariant }}
             >
-              {item?.medicine_name}
+              {item?.product_name}
             </Text>
             <View style={styles.detailContentContainer}>
               <View style={styles.detailContentItem}>
@@ -52,7 +52,7 @@ const MedicineCard = ({
                   size={16}
                   color={colors.onPrimaryContainer}
                 />
-                <Text>{item?.cost}</Text>
+                <Text>{item?.price}</Text>
               </View>
               <View style={styles.detailContentItem}>
                 <MaterialIcons
@@ -60,16 +60,16 @@ const MedicineCard = ({
                   size={16}
                   color={colors.onPrimaryContainer}
                 />
-                <Text>{item?.cost}</Text>
+                <Text>{item?.available_stock}</Text>
               </View>
-              <View style={styles.detailContentItem}>
+              {/* <View style={styles.detailContentItem}>
                 <MaterialIcons
                   name="star-rate"
                   size={16}
                   color={colors.onPrimaryContainer}
                 />
                 <Text>{item?.ratings}</Text>
-              </View>
+              </View> */}
             </View>
             <Button
               mode="contained"
@@ -114,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MedicineCard;
+export default ProductCard;

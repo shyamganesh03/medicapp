@@ -7,7 +7,7 @@ import "react-native-reanimated";
 import Toast from "react-native-toast-message";
 
 import { Colors } from "@/constants/Colors";
-import { useThemeStore, useUserStore } from "@/store";
+import { useThemeStore } from "@/store";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -15,8 +15,6 @@ export default function RootLayout() {
   });
 
   const currentTheme = useThemeStore((state: any) => state.theme);
-  const addNewUser = useUserStore((state) => state.createNewZustandUser);
-  const userDetails = useUserStore((state) => state.userDetails);
 
   const lightTheme = useMemo(
     () => ({

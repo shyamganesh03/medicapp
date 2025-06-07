@@ -1,4 +1,4 @@
-import { create_new_user } from "@/api/auth_api";
+import { create_new_user, get_user_details } from "@/api/auth_api";
 import { useUserStore } from "@/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -9,11 +9,9 @@ import {
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
-import useFireBase from "./useFirebase";
 
 const useAuth = () => {
   const auth = getAuth();
-  const { getCurrentUserDetails } = useFireBase();
   const { createNewZustandUser } = useUserStore();
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
@@ -55,25 +53,30 @@ const useAuth = () => {
       return error;
     });
     if (authResult?.user) {
-      const userDetails = await getCurrentUserDetails(authResult?.user?.uid);
-      const userData = userDetails?.result?.data();
-      const newUserDetails = {
-        contact_number: userData?.contact_number,
-        email: userData?.email,
-        full_name: userData?.full_name,
-        gender: "",
-        home_address: "",
-        profile_pic: "",
-        qrCode: "",
-        uid: userData?.uid,
-        country_code: userData?.country_code,
-        is_admin: false,
-        is_email_verified: userData?.emailVerified,
-        is_new_user: userData?.isNewUser,
-        is_phone_verified: false,
-      };
-      createNewZustandUser(newUserDetails);
-      router.replace("/(tabs)");
+      const userData = await get_user_details(authResult?.user?.uid);
+      if (userData) {
+        const newUserDetails = {
+          id: userData?.id,
+          full_name: userData?.full_name,
+          email: userData?.email,
+          profile_pic: userData?.profile_pic,
+          phone_number: userData?.phone_number,
+          country_code: userData?.country_code,
+          house_no: userData?.house_no,
+          street_name: userData?.street_name,
+          city: userData?.city,
+          country: userData?.country,
+          address_type: userData?.address_type,
+          shop_name: userData?.address_type,
+          is_phone_number_verified: userData?.is_phone_number_verified,
+          is_email_verified: userData?.is_email_verified,
+          is_admin: userData?.is_admin,
+          role: userData?.role,
+          is_active: userData?.is_active,
+        };
+        createNewZustandUser(newUserDetails);
+        router.replace("/(tabs)");
+      }
     }
   };
 

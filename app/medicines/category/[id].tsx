@@ -1,8 +1,8 @@
-import MedicineCard from "@/components/ui/MedicineCard";
-import useFireBase from "@/hooks/useFirebase";
+import ProductCard from "@/components/ui/ProductCard";
+import useProducts from "@/hooks/useProducts";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Surface, Text, useTheme } from "react-native-paper";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
@@ -10,26 +10,50 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 const CategoryHorizontalScroll = ({
   isFetching,
   data,
-  category,
+  category_id,
   handlePress = () => {},
 }: {
   isFetching: boolean;
   data: any[];
-  category: string | string[];
+  category_id: string;
   handlePress: any;
 }) => {
-  const router = useRouter();
   const { colors } = useTheme();
+  const categoryListRef: React.Ref<FlatList<any>> = useRef(null);
+
+  useEffect(() => {
+    if (categoryListRef.current && !isFetching && data?.length > 1) {
+      const selectedItemIndex = data.findIndex(
+        (item) => item?.id === category_id
+      );
+      if (selectedItemIndex >= 0) {
+        categoryListRef.current.scrollToIndex({
+          index: selectedItemIndex,
+          animated: true,
+        });
+      }
+    }
+  }, [category_id, isFetching, data]);
+
   return (
     <FlatList
       data={isFetching ? [0, 1, 2, 3, 4, 5] : data}
-      keyExtractor={(item: any) => item?.id || item}
+      keyExtractor={(item: any) => item?.id}
       horizontal
+      ref={categoryListRef}
+      onScrollToIndexFailed={(info) => {
+        setTimeout(() => {
+          categoryListRef.current?.scrollToIndex({
+            index: info.index,
+            animated: true,
+          });
+        }, 100);
+      }}
       renderItem={({ item }) => (
         <TouchableOpacity
           onPress={() => {
             if (!isFetching) {
-              handlePress(item?.name);
+              handlePress(item);
             }
           }}
         >
@@ -51,7 +75,7 @@ const CategoryHorizontalScroll = ({
             <View
               style={{
                 backgroundColor:
-                  item?.name === category
+                  item?.id === category_id
                     ? colors.primary
                     : colors.primaryContainer,
                 padding: 8,
@@ -65,7 +89,7 @@ const CategoryHorizontalScroll = ({
                 variant="bodySmall"
                 style={{
                   color:
-                    item?.name === category
+                    item?.id === category_id
                       ? colors.onPrimary
                       : colors.onPrimaryContainer,
                 }}
@@ -88,27 +112,27 @@ const CategoryHorizontalScroll = ({
 };
 
 const MedicineCategoryScreen = () => {
-  const { category } = useLocalSearchParams();
-  const [selectedCategory, setSelectedCategory] = React.useState<
-    string | string[]
-  >(category);
+  const { id } = useLocalSearchParams();
+  const [selectedCategory, setSelectedCategory] = React.useState<any>({
+    id: id,
+  });
   const { colors } = useTheme();
   const router = useRouter();
   const {
     categoryList,
     isFetchingCategoryList,
     isFetchingMedicinesList,
-    medicinesList,
+    productList,
     getMedicinesCategoriesList,
-    getMedicinesListByCategory,
-  } = useFireBase();
-  //   console.log("medicinesList", medicinesList);
+    getProductsByCategoryId,
+  } = useProducts();
+
   useEffect(() => {
     getMedicinesCategoriesList({});
   }, []);
 
   useEffect(() => {
-    getMedicinesListByCategory(selectedCategory);
+    getProductsByCategoryId(selectedCategory?.id);
   }, [selectedCategory]);
 
   return (
@@ -133,9 +157,9 @@ const MedicineCategoryScreen = () => {
         <CategoryHorizontalScroll
           data={[{ id: "01", name: "All" }, ...categoryList]}
           isFetching={isFetchingCategoryList}
-          category={selectedCategory}
-          handlePress={(categoryName: string) => {
-            setSelectedCategory(categoryName);
+          category_id={selectedCategory?.id}
+          handlePress={(selectedItem: any) => {
+            setSelectedCategory(selectedItem);
           }}
         />
         {isFetchingMedicinesList ? (
@@ -143,23 +167,21 @@ const MedicineCategoryScreen = () => {
             data={[0, 1, 2, 3, 4, 5, 6, 7]}
             keyExtractor={(item: any) => item?.unique_id}
             renderItem={({ item }) => (
-              <MedicineCard item={item} handleOnPress={() => {}} isFetching />
+              <ProductCard item={item} handleOnPress={() => {}} isFetching />
             )}
             contentContainerStyle={{ gap: 16, paddingBottom: 40 }}
             showsVerticalScrollIndicator={false}
           />
         ) : (
           <FlatList
-            data={
-              isFetchingMedicinesList ? [0, 1, 2, 3, 4, 5, 6, 7] : medicinesList
-            }
-            keyExtractor={(item: any) => item?.unique_id}
+            data={productList}
+            keyExtractor={(item: any) => item?.product_id}
             renderItem={({ item }) => (
-              <MedicineCard
+              <ProductCard
                 item={item}
                 handleOnPress={() =>
                   // @ts-ignore
-                  router.push(`/medicines/${item?.unique_id}`)
+                  router.push(`/medicines/${item?.product_id}`)
                 }
                 isFetching={isFetchingCategoryList}
               />

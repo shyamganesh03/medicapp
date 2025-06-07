@@ -1,18 +1,24 @@
+import {
+  get_categories_list,
+  get_product_by_id,
+  get_product_list_by_category_id,
+} from "@/api/products_api";
 import firestore from "@react-native-firebase/firestore";
 import { useState } from "react";
 import uuid from "react-native-uuid";
 
-const useFireBase = () => {
+const useProducts = () => {
   const usersCollection = firestore().collection("Users");
-  const medicineTypeCollection = firestore().collection("Medicines_Types");
   const medicinesCollection = firestore().collection("Medicines");
   const [isFetchingCategoryList, setIsFetchingCategoryList] = useState(false);
   const [categoryList, setCategoryList] = useState<any>([]);
   const [isFetchingMedicinesList, setIsFetchingMedicinesList] = useState(false);
-  const [medicinesList, setMedicinesList] = useState<any>([]);
+  const [productList, setProductList] = useState<any>([]);
   const [isFetchingMedicinesDetails, setIsFetchingMedicinesDetails] =
     useState(false);
   const [medicinesDetails, setMedicinesDetails] = useState<any>([]);
+  const [isFetchingProduct, setIsFetchingProduct] = useState(false);
+  const [product, setProduct] = useState<any>([]);
 
   const uploadMedicines = async () => {
     try {
@@ -67,16 +73,9 @@ const useFireBase = () => {
   }) => {
     try {
       setIsFetchingCategoryList(true);
-      const medicinesCollection = limit
-        ? medicineTypeCollection.limit(limit)
-        : medicineTypeCollection;
-      const result = await medicinesCollection.get();
-      const medicinesList: any = [];
-      result.forEach((doc) => {
-        medicinesList.push(doc.data());
-      });
+      const result = await get_categories_list();
       setIsFetchingCategoryList(false);
-      setCategoryList(medicinesList);
+      setCategoryList(result);
     } catch (error) {
       setIsFetchingCategoryList(false);
       console.error("Error fetching medicines categories:", error);
@@ -84,31 +83,25 @@ const useFireBase = () => {
     }
   };
 
-  const getMedicinesListByCategory = async (category: string | string[]) => {
+  const getProductsByCategoryId = async (id: string) => {
     try {
       setIsFetchingMedicinesList(true);
-      const medicinesList =
-        category === "All"
-          ? await medicinesCollection.get()
-          : await medicinesCollection.where("type", "==", category).get();
-      const finalAArr: any[] = [];
-      medicinesList.forEach((doc) => {
-        finalAArr.push(doc.data());
-      });
+      const productList = await get_product_list_by_category_id(id);
       setIsFetchingMedicinesList(false);
-      setMedicinesList(finalAArr);
+      console.log("productList: ", productList);
+      setProductList(productList);
     } catch (error) {
       setIsFetchingMedicinesList(false);
       console.error("Error fetching medicines categories:", error);
     }
   };
 
-  const getMedicineDetails = async (medicineID: string) => {
+  const getProductDetails = async (productID: string) => {
     try {
-      setIsFetchingMedicinesDetails(true);
-      const result = await medicinesCollection.doc(medicineID).get();
-      setMedicinesDetails(result.data());
-      setIsFetchingMedicinesDetails(false);
+      setIsFetchingProduct(true);
+      const result = await get_product_by_id(productID);
+      setProduct(result);
+      setIsFetchingProduct(false);
     } catch (error) {
       setIsFetchingMedicinesDetails(false);
       console.error("Error fetching medicines details:", error);
@@ -118,18 +111,20 @@ const useFireBase = () => {
   return {
     categoryList,
     isFetchingCategoryList,
-    isFetchingMedicinesList,
     isFetchingMedicinesDetails,
+    isFetchingMedicinesList,
+    isFetchingProduct,
     medicinesDetails,
-    medicinesList,
+    product,
+    productList,
     createNewUser,
     getCurrentUserDetails,
     getMedicinesCategoriesList,
-    getMedicineDetails,
-    getMedicinesListByCategory,
+    getProductDetails,
+    getProductsByCategoryId,
     updateUserDetails,
     uploadMedicines,
   };
 };
 
-export default useFireBase;
+export default useProducts;

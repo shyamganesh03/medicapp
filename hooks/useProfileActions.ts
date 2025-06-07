@@ -4,12 +4,12 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
 import useAuth from "./useAuth";
-import useFireBase from "./useFirebase";
+import useProducts from "./useProducts";
 
 const useProfileActions = () => {
   const router = useRouter();
   const { handleLogOut } = useAuth();
-  const { updateUserDetails } = useFireBase();
+  const { updateUserDetails } = useProducts();
   const updateZustandUserDetails = useUserStore(
     (state) => state.updateZustandUserDetails
   );
@@ -46,7 +46,7 @@ const useProfileActions = () => {
     }
   };
 
-  return { isProcessing,handleProfileOptions, handleProfileUpdate };
+  return { isProcessing, handleProfileOptions, handleProfileUpdate };
 };
 
 export default useProfileActions;

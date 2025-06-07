@@ -1,23 +1,26 @@
 // store.ts
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ICountry } from "react-native-international-phone-number";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export type UserDetails = {
-  contact_number: string;
-  country_code: ICountry;
+  address_type: string;
+  city: string;
+  country_code: string;
+  country: string;
   email: string;
   full_name: string;
-  gender: string;
-  home_address: string;
+  house_no: string;
+  id: string;
+  is_active: boolean;
   is_admin: boolean;
   is_email_verified: boolean;
-  is_new_user: boolean;
-  is_phone_verified: boolean;
+  is_phone_number_verified: boolean;
+  phone_number: string;
   profile_pic: string;
-  qrCode: string;
-  uid: string;
+  role: string;
+  shop_name: string;
+  street_name: string;
 };
 
 type UserStore = {
@@ -39,48 +42,23 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       userDetails: {
-        country_code: {
-          callingCode: "+91",
-          cca2: "IN",
-          flag: "🇮🇳",
-          name: {
-            bg: "Индия",
-            by: "Індыя",
-            cn: "印度",
-            cz: "Indie",
-            de: "Indien",
-            ee: "India",
-            el: "Ινδία",
-            en: "India",
-            ar: "الهند",
-            es: "India",
-            fr: "Inde",
-            he: "הוֹדוּ",
-            it: "India",
-            jp: "インド",
-            nl: "India",
-            pl: "Indie",
-            pt: "Índia",
-            ro: "India",
-            ru: "Индия",
-            ua: "Індія",
-            zh: "印度",
-            tr: "Hindistan",
-          },
-          phoneMasks: ["#### ### ###"],
-        },
-        contact_number: "",
-        is_admin: false,
-        is_email_verified: false,
-        is_new_user: false,
-        is_phone_verified: false,
+        address_type: "",
+        city: "",
+        country_code: "",
+        country: "",
         email: "",
         full_name: "",
-        gender: "",
-        home_address: "",
+        house_no: "",
+        id: "",
+        is_active: false,
+        is_admin: false,
+        is_email_verified: false,
+        is_phone_number_verified: false,
+        phone_number: "",
         profile_pic: "",
-        qrCode: "",
-        uid: "",
+        role: "",
+        shop_name: "",
+        street_name: "",
       },
       updateZustandUserDetailsField: (fieldName, value) =>
         set((state) => ({

@@ -8,7 +8,7 @@ export default function AuthLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    if (userDetails?.uid) {
+    if (userDetails?.id) {
       router.replace("/(tabs)");
     }
     setIsUserDetailsChecked(true);

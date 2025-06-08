@@ -20,7 +20,6 @@ const SignIn = () => {
   const { colors } = useTheme();
   const { isProcessing, handleSignInWithEmailAndPassword } = useAuth();
   const params = useLocalSearchParams();
-  console.log("params: ", params);
   const [loginDetails, setLoginDetails] = React.useState({
     userName: "",
     password: "",

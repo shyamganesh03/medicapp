@@ -39,7 +39,7 @@ const SignUp = () => {
     [signupDetails.password]
   );
 
-  const canEnableSubmitCTA = React.useMemo(
+  const canDisableSubmitCTA = React.useMemo(
     () =>
       hasError ||
       !signupDetails?.password ||
@@ -61,9 +61,9 @@ const SignUp = () => {
   };
 
   const handleTextInputChange = (text: string, fieldName: string) => {
-    setSignupDetails((prev) => ({ ...prev, [fieldName]: text }));
     const hasError = checkIsPasswordValid(text, fieldName);
     setHasError(hasError);
+    setSignupDetails((prev) => ({ ...prev, [fieldName]: text }));
   };
 
   return (
@@ -138,7 +138,7 @@ const SignUp = () => {
                 signupDetails?.password
               );
             }}
-            disabled={canEnableSubmitCTA}
+            disabled={canDisableSubmitCTA}
             loading={isProcessing}
           >
             Submit

@@ -1,13 +1,22 @@
 // store.ts
+import { defaultUserDetails } from "@/constants/default-data";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ICountryName } from "react-native-international-phone-number/lib/interfaces/countryName";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+
+type CountryType = {
+  callingCode: string;
+  cca2: string;
+  flag: string;
+  name: ICountryName;
+  phoneMasks?: string[];
+};
 
 export type UserDetails = {
   address_type: string;
   city: string;
-  country_code: string;
-  country: string;
+  country: CountryType;
   email: string;
   full_name: string;
   house_no: string;
@@ -41,25 +50,7 @@ type ThemeStore = {
 export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      userDetails: {
-        address_type: "",
-        city: "",
-        country_code: "",
-        country: "",
-        email: "",
-        full_name: "",
-        house_no: "",
-        id: "",
-        is_active: false,
-        is_admin: false,
-        is_email_verified: false,
-        is_phone_number_verified: false,
-        phone_number: "",
-        profile_pic: "",
-        role: "",
-        shop_name: "",
-        street_name: "",
-      },
+      userDetails: defaultUserDetails,
       updateZustandUserDetailsField: (fieldName, value) =>
         set((state) => ({
           userDetails: {

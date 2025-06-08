@@ -1,15 +1,14 @@
+import { update_user_details } from "@/api/auth_api";
 import { ProfileMenuItemsProps } from "@/constants/profile-menu-items";
 import { UserDetails, useUserStore } from "@/store";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
 import useAuth from "./useAuth";
-import useProducts from "./useProducts";
 
 const useProfileActions = () => {
   const router = useRouter();
   const { handleLogOut } = useAuth();
-  const { updateUserDetails } = useProducts();
   const updateZustandUserDetails = useUserStore(
     (state) => state.updateZustandUserDetails
   );
@@ -26,14 +25,20 @@ const useProfileActions = () => {
 
   const handleProfileUpdate = async (profileDetails: UserDetails) => {
     setIsProcessing(true);
-    const result = await updateUserDetails(profileDetails?.uid, profileDetails);
-    if (result?.success) {
+    const updatedUserDetails = {
+      ...profileDetails,
+      calling_code: profileDetails?.country?.callingCode,
+      country: profileDetails?.country?.cca2,
+      uid: profileDetails?.id,
+    };
+    const result = await update_user_details(updatedUserDetails);
+    if (!!result) {
       updateZustandUserDetails(profileDetails);
       setIsProcessing(false);
       Toast.show({
         type: "success",
         text1: "Profile Updated",
-        text2: "Your profile has been updated successfully!",
+        text2: result,
       });
     } else {
       setIsProcessing(false);

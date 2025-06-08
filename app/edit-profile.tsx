@@ -17,7 +17,8 @@ import InputText from "@/components/ui/InputText";
 import ProfilePic from "@/components/ui/ProfilePic";
 import { ProfileModule } from "@/constants/app-text-data";
 import useProfileActions from "@/hooks/useProfileActions";
-import { useUserStore } from "@/store";
+import { UserDetails, useUserStore } from "@/store";
+import { StatusBar } from "expo-status-bar";
 
 const Header = ({ colors }: { colors: MD3Colors }) => {
   const router = useRouter();
@@ -54,13 +55,15 @@ const Header = ({ colors }: { colors: MD3Colors }) => {
 const EditProfile = () => {
   const { height, width } = Dimensions.get("screen");
   const userDetails = useUserStore((state) => state.userDetails);
-  const [profileDetails, setProfileDetails] = React.useState<any>();
+  const [profileDetails, setProfileDetails] = React.useState<UserDetails>();
   const { isProcessing, handleProfileUpdate } = useProfileActions();
 
   const { colors } = useTheme();
 
   useEffect(() => {
-    setProfileDetails(userDetails);
+    if (userDetails?.id) {
+      setProfileDetails(userDetails);
+    }
   }, [userDetails]);
 
   return (
@@ -89,33 +92,35 @@ const EditProfile = () => {
         <View style={{ gap: 16, paddingHorizontal: 16 }}>
           <InputText
             label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.FULL_NAME}
-            value={profileDetails?.full_name}
+            value={profileDetails?.full_name || ""}
             onChangeText={(value) =>
-              setProfileDetails({ ...profileDetails, full_name: value })
+              setProfileDetails((prev: any) => ({
+                ...prev,
+                full_name: value,
+              }))
             }
           />
           <InputText
             label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.EMAIL_ID}
-            value={profileDetails?.email}
-            onChangeText={(value) =>
-              setProfileDetails({ ...profileDetails, email: value })
-            }
+            value={profileDetails?.email || ""}
+            onChangeText={() => {}}
             disabled
           />
           <PhoneInput
-            value={profileDetails?.contact_number}
-            onChangePhoneNumber={(contactNo) =>
-              setProfileDetails({
-                ...profileDetails,
-                contact_number: contactNo,
-              })
-            }
-            selectedCountry={profileDetails?.country_code}
-            onChangeSelectedCountry={(countryCode) =>
-              setProfileDetails({
-                ...profileDetails,
-                country_code: countryCode,
-              })
+            value={profileDetails?.phone_number || ""}
+            onChangePhoneNumber={(value) => {
+              setProfileDetails((prev: any) => ({
+                ...prev,
+                phone_number: value,
+              }));
+            }}
+            selectedCountry={profileDetails?.country}
+            defaultCountry="IN"
+            onChangeSelectedCountry={(country) =>
+              setProfileDetails((prev: any) => ({
+                ...prev,
+                country: country,
+              }))
             }
             placeholder={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.CONTACT_NO}
             placeholderTextColor={colors.secondary}
@@ -136,7 +141,7 @@ const EditProfile = () => {
               },
             }}
           />
-          <InputText
+          {/* <InputText
             label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.ADDRESS}
             value={profileDetails?.home_address}
             onChangeText={(value) =>
@@ -144,16 +149,20 @@ const EditProfile = () => {
             }
             multiline
             numberOfLines={4}
-          />
+          /> */}
           <Button
             mode="contained"
-            onPress={() => handleProfileUpdate(profileDetails)}
+            onPress={() => {
+              // @ts-ignore
+              handleProfileUpdate(profileDetails);
+            }}
             loading={isProcessing}
           >
             {ProfileModule.EDIT_PROFILE.SAVE_CTA}
           </Button>
         </View>
       </ScrollView>
+      <StatusBar style="light" />
     </KeyboardAvoidingView>
   );
 };

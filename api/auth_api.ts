@@ -46,4 +46,28 @@ export const get_user_details = async (uid: string) => {
   }
 };
 
-
+export const update_user_details = async (updatedUserDetails: any) => {
+  try {
+    if (!process.env.EXPO_PUBLIC_API_URL) {
+      throw new Error("EXPO_PUBLIC_API_URL is not defined");
+    }
+    const result = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/users/update_user_details`,
+      updatedUserDetails
+    );
+    if (result.status === 200) {
+      return result.data?.message;
+    } else return false;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("Axios error:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    return false;
+  }
+};

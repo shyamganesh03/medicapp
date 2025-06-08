@@ -52,20 +52,6 @@ const useProducts = () => {
     return { result };
   };
 
-  const updateUserDetails = async (userID: string, userDetails: any) => {
-    const result = await usersCollection
-      .doc(userID)
-      .update(userDetails)
-      .then(() => {
-        return { success: true };
-      })
-      .catch((error) => {
-        console.log("error on update user details: ", error);
-        return { success: false };
-      });
-    return result;
-  };
-
   const getMedicinesCategoriesList = async ({
     limit = 0,
   }: {
@@ -122,7 +108,6 @@ const useProducts = () => {
     getMedicinesCategoriesList,
     getProductDetails,
     getProductsByCategoryId,
-    updateUserDetails,
     uploadMedicines,
   };
 };

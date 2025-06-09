@@ -52,11 +52,7 @@ const SignUp = () => {
     if (type === "password") {
       return text?.length < 4 && !!signupDetails?.password;
     } else {
-      return (
-        ((text?.length < 4 && !!signupDetails?.reEnterPassword) ||
-          signupDetails?.password !== text) &&
-        !!signupDetails?.reEnterPassword
-      );
+      return text?.length < 4 || signupDetails?.password !== text;
     }
   };
 

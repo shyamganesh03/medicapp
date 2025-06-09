@@ -233,7 +233,7 @@ const ProductDetailsScreen = () => {
           </View>
           <View style={styles.ctaContainer}>
             <Button mode="outlined">{MedicineModule.ADD_TO_CART}</Button>
-            <Button mode="contained">{MedicineModule.ADD_CTA}</Button>
+            <Button mode="contained">{MedicineModule.BUY_CTA}</Button>
           </View>
         </View>
       </ScrollView>

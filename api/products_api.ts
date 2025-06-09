@@ -60,7 +60,6 @@ export const get_product_by_id = async (id: string) => {
     const result = await axios.get(
       `${process.env.EXPO_PUBLIC_API_URL}/products/get_product_details_by_id?product_id=${id}`
     );
-    console.log("result: ", result);
     if (result.data?.item) {
       return result.data?.item;
     } else return [];

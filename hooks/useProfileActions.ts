@@ -1,4 +1,4 @@
-import { update_user_details } from "@/api/auth_api";
+import { update_user_details } from "@/api/user_api";
 import { ProfileMenuItemsProps } from "@/constants/profile-menu-items";
 import { UserDetails, useUserStore } from "@/store";
 import { useRouter } from "expo-router";

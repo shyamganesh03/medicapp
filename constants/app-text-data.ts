@@ -34,6 +34,9 @@ export const ProfileModule = {
     },
     SAVE_CTA: "Save",
   },
+  TOAST: {
+    IMAGE_UPLOAD_SUCCESSFULLY: "Image has been uploaded successfully.",
+  },
   COMING_SOON: "Coming Soon",
 };
 
@@ -48,11 +51,22 @@ export const MedicineModule = {
   ADD_CTA: "Add",
   ADD_TO_CART: "Add to Cart",
   READ_MORE: "Read Mode",
-  READ_LESS:" Read Less",
+  READ_LESS: " Read Less",
   DETAILS_SCREEN: {
     AVAILABLE_STOCK: "Available Stock",
     COST: "Cost",
     ABOUT: "About",
     RATINGS: "Ratings",
   },
+};
+
+export const AlertModule = {
+  CANCEL_CTA: "Cancel",
+  OPEN_SETTINGS: "Open Settings",
+  CONFIRM: "Confirm",
+};
+
+export const PermissionModule = {
+  GRANT_PERMISSION: "Grant permission",
+  CAMERA_DESCRIPTION: "Allow Medic to access Camera",
 };

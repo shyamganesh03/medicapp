@@ -1,12 +1,12 @@
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useMemo } from "react";
 import { DefaultTheme, MD3DarkTheme, PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import Toast from "react-native-toast-message";
 
 import { Colors } from "@/constants/Colors";
+import { AlertContextProvider } from "@/context/Alert";
 import { useThemeStore } from "@/store";
 
 export default function RootLayout() {
@@ -49,15 +49,17 @@ export default function RootLayout() {
 
   return (
     <PaperProvider theme={theme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="qr-code-screen" />
-        <Stack.Screen name="edit-profile" />
-        <Stack.Screen name="(medicines)" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <AlertContextProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="qr-code-screen" />
+          <Stack.Screen name="edit-profile" />
+          <Stack.Screen name="(medicines)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        {/* <StatusBar style="auto" /> */}
+      </AlertContextProvider>
       <Toast />
     </PaperProvider>
   );

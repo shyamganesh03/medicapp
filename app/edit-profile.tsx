@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  RefreshControl,
   ScrollView,
   View,
 } from "react-native";
@@ -13,6 +14,7 @@ import PhoneInput from "react-native-international-phone-number";
 import { Button, Text, useTheme } from "react-native-paper";
 import { MD3Colors } from "react-native-paper/lib/typescript/types";
 
+import { get_user_details } from "@/api/user_api";
 import InputText from "@/components/ui/InputText";
 import ProfilePic from "@/components/ui/ProfilePic";
 import { ProfileModule } from "@/constants/app-text-data";
@@ -55,7 +57,12 @@ const Header = ({ colors }: { colors: MD3Colors }) => {
 const EditProfile = () => {
   const { height, width } = Dimensions.get("screen");
   const userDetails = useUserStore((state) => state.userDetails);
+  const updateZustandUserDetails = useUserStore(
+    (state) => state.updateZustandUserDetails
+  );
+
   const [profileDetails, setProfileDetails] = React.useState<UserDetails>();
+  const [isRefresh, setIsRefresh] = React.useState(false);
   const { isProcessing, handleProfileUpdate } = useProfileActions();
 
   const { colors } = useTheme();
@@ -65,6 +72,13 @@ const EditProfile = () => {
       setProfileDetails(userDetails);
     }
   }, [userDetails]);
+
+  const onRefresh = async () => {
+    setIsRefresh(true);
+    const userData = await get_user_details(userDetails?.id);
+    updateZustandUserDetails(userData);
+    setIsRefresh(false);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -79,6 +93,9 @@ const EditProfile = () => {
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
+        refreshControl={
+          <RefreshControl refreshing={isRefresh} onRefresh={onRefresh} />
+        }
       >
         <View
           style={{
@@ -157,6 +174,7 @@ const EditProfile = () => {
               handleProfileUpdate(profileDetails);
             }}
             loading={isProcessing}
+            disabled={isProcessing}
           >
             {ProfileModule.EDIT_PROFILE.SAVE_CTA}
           </Button>

@@ -31,7 +31,13 @@ export const ProfileModule = {
       EMAIL_ID: "Email",
       CONTACT_NO: "Contact Number",
       ADDRESS: "Address",
+      HOUSE_NO: "House No",
+      ADDRESS_LINE_1: "Address Line 1",
+      CITY: "City",
+      STATE: "State",
+      COUNTRY: "Country",
     },
+    ADDRESS: "Address",
     SAVE_CTA: "Save",
   },
   TOAST: {
@@ -49,7 +55,7 @@ export const HomeModule = {
 
 export const MedicineModule = {
   ADD_CTA: "Add",
-  BUY_CTA:"Buy",
+  BUY_CTA: "Buy",
   ADD_TO_CART: "Add to Cart",
   READ_MORE: "Read Mode",
   READ_LESS: " Read Less",

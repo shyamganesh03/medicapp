@@ -134,7 +134,7 @@ const SignUp = () => {
                 signupDetails?.password
               );
             }}
-            disabled={canDisableSubmitCTA}
+            disabled={canDisableSubmitCTA || isProcessing}
             loading={isProcessing}
           >
             Submit

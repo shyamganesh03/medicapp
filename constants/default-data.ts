@@ -30,7 +30,6 @@ export const defaultCountry = {
 };
 
 export const defaultUserDetails = {
-  address_type: "",
   city: "",
   country: defaultCountry,
   email: "",
@@ -45,5 +44,15 @@ export const defaultUserDetails = {
   profile_pic: "",
   role: "",
   shop_name: "",
-  street_name: "",
+  address: {
+    user_id: "",
+    type: "",
+    house_no: "",
+    address_line_1: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    country: "",
+    is_default: true,
+  },
 };

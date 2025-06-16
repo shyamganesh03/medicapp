@@ -15,13 +15,23 @@ type CountryType = {
   phoneMasks?: string[];
 };
 
+type AddressFieldType = {
+  user_id?: string;
+  type: string;
+  house_no: string;
+  address_line_1: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  is_default: boolean;
+};
+
 export type UserDetails = {
-  address_type: string;
   city: string;
   country: CountryType;
   email: string;
   full_name: string;
-  house_no: string;
   id: string;
   is_active: boolean;
   is_admin: boolean;
@@ -31,7 +41,7 @@ export type UserDetails = {
   profile_pic: string;
   role: string;
   shop_name: string;
-  street_name: string;
+  address?: AddressFieldType;
 };
 
 type UserStore = {
@@ -54,22 +64,8 @@ const getFormattedUserDetails = (userData: any) => {
     (countryItem: any) => countryItem?.callingCode === userData?.calling_code
   );
   const newUserDetails = {
-    id: userData?.id,
-    full_name: userData?.full_name,
-    email: userData?.email,
-    profile_pic: userData?.profile_pic,
-    phone_number: userData?.phone_number,
-    house_no: userData?.house_no,
-    street_name: userData?.street_name,
-    city: userData?.city,
+    ...userData,
     country: country || defaultCountry,
-    address_type: userData?.address_type,
-    shop_name: userData?.address_type,
-    is_phone_number_verified: userData?.is_phone_number_verified,
-    is_email_verified: userData?.is_email_verified,
-    is_admin: userData?.is_admin,
-    role: userData?.role,
-    is_active: userData?.is_active,
   };
   return newUserDetails;
 };
@@ -78,15 +74,19 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       userDetails: defaultUserDetails,
-      updateZustandUserDetailsField: (fieldName, value) =>
-        set((state) => ({
+      updateZustandUserDetailsField: (fieldName, value) => {
+        console.log("fi  -> ", fieldName, value);
+        return set((state) => ({
           userDetails: {
             ...state.userDetails,
             [fieldName]: value,
           },
-        })),
+        }));
+      },
       updateZustandUserDetails: (userData: any) => {
         const newUserDetails = getFormattedUserDetails(userData);
+
+        console.log("newUserDetails: ", newUserDetails);
         return set(() => ({
           userDetails: newUserDetails,
         }));

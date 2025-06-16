@@ -68,9 +68,7 @@ const EditProfile = () => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    if (userDetails?.id) {
-      setProfileDetails(userDetails);
-    }
+    if (userDetails?.id) setProfileDetails(userDetails);
   }, [userDetails]);
 
   const onRefresh = async () => {
@@ -158,15 +156,92 @@ const EditProfile = () => {
               },
             }}
           />
-          {/* <InputText
-            label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.ADDRESS}
-            value={profileDetails?.home_address}
-            onChangeText={(value) =>
-              setProfileDetails({ ...profileDetails, home_address: value })
-            }
-            multiline
-            numberOfLines={4}
-          /> */}
+          <View
+            style={{
+              borderTopWidth: 0.5,
+              borderColor: colors.outline,
+              paddingVertical: 12,
+              gap: 16,
+            }}
+          >
+            <Text variant="bodyMedium">
+              {ProfileModule.EDIT_PROFILE.ADDRESS}
+            </Text>
+            <InputText
+              label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.HOUSE_NO}
+              value={profileDetails?.address?.house_no!}
+              onChangeText={(value) =>
+                setProfileDetails({
+                  ...profileDetails!,
+                  // @ts-ignore
+                  address: {
+                    ...profileDetails?.address,
+                    house_no: value,
+                  },
+                })
+              }
+            />
+            <InputText
+              label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.ADDRESS_LINE_1}
+              value={profileDetails?.address?.address_line_1!}
+              onChangeText={(value) =>
+                setProfileDetails({
+                  ...profileDetails!,
+                  // @ts-ignore
+                  address: {
+                    ...profileDetails?.address,
+                    address_line_1: value,
+                  },
+                })
+              }
+              multiline
+              style={{
+                height: 100,
+              }}
+            />
+            <InputText
+              label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.CITY}
+              value={profileDetails?.address?.city!}
+              onChangeText={(value) =>
+                setProfileDetails({
+                  ...profileDetails!,
+                  // @ts-ignore
+                  address: {
+                    ...profileDetails?.address,
+                    city: value,
+                  },
+                })
+              }
+            />
+            <InputText
+              label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.STATE}
+              value={profileDetails?.address?.state!}
+              onChangeText={(value) =>
+                setProfileDetails({
+                  ...profileDetails!,
+                  // @ts-ignore
+                  address: {
+                    ...profileDetails?.address,
+                    state: value,
+                  },
+                })
+              }
+            />
+            <InputText
+              label={ProfileModule.EDIT_PROFILE.TEXT_INPUT_LABEL.COUNTRY}
+              value={profileDetails?.address?.country!}
+              onChangeText={(value) =>
+                setProfileDetails({
+                  ...profileDetails!,
+                  // @ts-ignore
+                  address: {
+                    ...profileDetails?.address,
+                    country: value,
+                  },
+                })
+              }
+            />
+          </View>
           <Button
             mode="contained"
             onPress={() => {

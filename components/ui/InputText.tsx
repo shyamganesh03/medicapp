@@ -2,23 +2,25 @@ import React from "react";
 import { TextInput } from "react-native-paper";
 
 type InputTextProps = {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
+  disabled?: boolean;
   error?: boolean;
+  label: string;
   multiline?: boolean;
   numberOfLines?: number | undefined;
-  disabled?: boolean;
+  onChangeText: (text: string) => void;
+  style?: any;
+  value: string;
 };
 
 const InputText = ({
-  label,
-  value,
-  onChangeText,
+  disabled = false,
   error = false,
+  label,
   multiline = false,
   numberOfLines,
-  disabled = false,
+  onChangeText,
+  style = {},
+  value,
 }: InputTextProps) => {
   return (
     <TextInput
@@ -31,6 +33,7 @@ const InputText = ({
       multiline={multiline}
       numberOfLines={numberOfLines}
       disabled={disabled}
+      style={style}
     />
   );
 };

@@ -103,7 +103,7 @@ const SignIn = () => {
                 loginDetails?.password
               );
             }}
-            disabled={canDisableCTA}
+            disabled={canDisableCTA || isProcessing}
             loading={isProcessing}
           >
             {AuthModule.SIGN_IN}

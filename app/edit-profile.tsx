@@ -18,6 +18,7 @@ import { get_user_details } from "@/api/user_api";
 import InputText from "@/components/ui/InputText";
 import ProfilePic from "@/components/ui/ProfilePic";
 import { ProfileModule } from "@/constants/app-text-data";
+import useHandleError from "@/hooks/useHandleError";
 import useProfileActions from "@/hooks/useProfileActions";
 import { UserDetails, useUserStore } from "@/store";
 import { StatusBar } from "expo-status-bar";
@@ -64,6 +65,7 @@ const EditProfile = () => {
   const [profileDetails, setProfileDetails] = React.useState<UserDetails>();
   const [isRefresh, setIsRefresh] = React.useState(false);
   const { isProcessing, handleProfileUpdate } = useProfileActions();
+  const { handleError } = useHandleError();
 
   const { colors } = useTheme();
 
@@ -73,8 +75,13 @@ const EditProfile = () => {
 
   const onRefresh = async () => {
     setIsRefresh(true);
-    const userData = await get_user_details(userDetails?.id);
-    updateZustandUserDetails(userData);
+    const response: any = await get_user_details(userDetails?.id);
+    if (Array.isArray(response) && response.length > 0) {
+      // @ts-ignore
+      updateZustandUserDetails(response);
+    } else {
+      handleError(response);
+    }
     setIsRefresh(false);
   };
 

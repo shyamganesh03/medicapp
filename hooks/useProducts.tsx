@@ -6,10 +6,9 @@ import {
 import firestore from "@react-native-firebase/firestore";
 import { useState } from "react";
 import uuid from "react-native-uuid";
+import useHandleError from "./useHandleError";
 
 const useProducts = () => {
-  const usersCollection = firestore().collection("Users");
-  const medicinesCollection = firestore().collection("Medicines");
   const [isFetchingCategoryList, setIsFetchingCategoryList] = useState(false);
   const [categoryList, setCategoryList] = useState<any>([]);
   const [isFetchingMedicinesList, setIsFetchingMedicinesList] = useState(false);
@@ -20,6 +19,8 @@ const useProducts = () => {
   const [isFetchingProduct, setIsFetchingProduct] = useState(false);
   const [product, setProduct] = useState<any>([]);
 
+  const { handleError } = useHandleError();
+
   const uploadMedicines = async () => {
     try {
       const medicinesCollection = firestore().collection("Medicines_Types");
@@ -29,27 +30,11 @@ const useProducts = () => {
         const id = uuid.v4();
         await medicinesCollection.doc(id).set({ name: medicine, id: id });
       }
-
       console.log("Medicines uploaded successfully.");
     } catch (error) {
+      handleError(error);
       console.error("Error uploading medicines:", error);
     }
-  };
-
-  const createNewUser = async (userDetails: any) => {
-    const result = await usersCollection
-      .doc(userDetails?.uid)
-      .set(userDetails)
-      .catch((error) => {
-        console.log("error on create new user: ", error);
-        return { success: false };
-      });
-    return result;
-  };
-
-  const getCurrentUserDetails = async (userID: string) => {
-    const result = await usersCollection.doc(userID).get();
-    return { result };
   };
 
   const getMedicinesCategoriesList = async ({
@@ -65,6 +50,7 @@ const useProducts = () => {
     } catch (error) {
       setIsFetchingCategoryList(false);
       console.error("Error fetching medicines categories:", error);
+      handleError(error);
       return [];
     }
   };
@@ -78,6 +64,7 @@ const useProducts = () => {
       setProductList(productList);
     } catch (error) {
       setIsFetchingMedicinesList(false);
+      handleError(error);
       console.error("Error fetching medicines categories:", error);
     }
   };
@@ -90,6 +77,7 @@ const useProducts = () => {
       setIsFetchingProduct(false);
     } catch (error) {
       setIsFetchingMedicinesDetails(false);
+      handleError(error);
       console.error("Error fetching medicines details:", error);
     }
   };
@@ -103,8 +91,6 @@ const useProducts = () => {
     medicinesDetails,
     product,
     productList,
-    createNewUser,
-    getCurrentUserDetails,
     getMedicinesCategoriesList,
     getProductDetails,
     getProductsByCategoryId,

@@ -8,8 +8,6 @@ import {
 import useProfileActions from "@/hooks/useProfileActions";
 import { useUserStore } from "@/store";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useRouter } from "expo-router";
-import { useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Surface, Text, useTheme } from "react-native-paper";
 import { MD3Colors } from "react-native-paper/lib/typescript/types";
@@ -68,10 +66,7 @@ const renderItem = ({
 export default function Profile() {
   const userDetails = useUserStore((state: any) => state.userDetails);
   const { colors } = useTheme();
-  const [canShowQRScanner, setCanShowQrScanner] = useState(false);
   const { handleProfileOptions } = useProfileActions();
-
-  const router = useRouter();
 
   return (
     <View>

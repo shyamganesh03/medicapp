@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as FileSystem from "expo-file-system";
+import { getAuthToken } from "./utils";
 
 export const create_new_user = async (email: string, password: string) => {
   try {
@@ -16,24 +17,28 @@ export const create_new_user = async (email: string, password: string) => {
     if (result.data?.user?.id) {
       return true;
     } else return false;
-  } catch (error) {
+  } catch (error: any) {
     console.log("error: ", error);
-    return false;
+    return error.response?.data?.error;
   }
 };
 
 export const get_user_details = async (uid: string) => {
   try {
+    const token = await getAuthToken();
     if (!process.env.EXPO_PUBLIC_API_URL) {
       throw new Error("EXPO_PUBLIC_API_URL is not defined");
     }
     const result = await axios.get(
-      `${process.env.EXPO_PUBLIC_API_URL}/users/get_user_details?uid=${uid}`
+      `${process.env.EXPO_PUBLIC_API_URL}/users/get_user_details?uid=${uid}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
-    if (result.data?.user?.id) {
-      return result.data?.user;
-    } else return false;
-  } catch (error) {
+    return result.data?.user;
+  } catch (error: any) {
     if (axios.isAxiosError(error)) {
       console.log("Axios error:", {
         message: error.message,
@@ -43,23 +48,27 @@ export const get_user_details = async (uid: string) => {
     } else {
       console.error("Unexpected error:", error);
     }
-    return false;
+    return error.response?.data?.error;
   }
 };
 
 export const update_user_details = async (updatedUserDetails: any) => {
   try {
+    const token = await getAuthToken();
     if (!process.env.EXPO_PUBLIC_API_URL) {
       throw new Error("EXPO_PUBLIC_API_URL is not defined");
     }
     const result = await axios.post(
       `${process.env.EXPO_PUBLIC_API_URL}/users/update_user_details`,
-      updatedUserDetails
+      updatedUserDetails,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
-    if (result.status === 200) {
-      return result.data?.message;
-    } else return false;
-  } catch (error) {
+    return result.data?.message;
+  } catch (error: any) {
     if (axios.isAxiosError(error)) {
       console.log("Axios error:", {
         message: error.message,
@@ -69,12 +78,13 @@ export const update_user_details = async (updatedUserDetails: any) => {
     } else {
       console.error("Unexpected error:", error);
     }
-    return false;
+    return error.response?.data?.error;
   }
 };
 
 export const upload_image = async (payload: any) => {
   try {
+    const token = await getAuthToken();
     const fileInfo = await FileSystem.uploadAsync(
       `${process.env.EXPO_PUBLIC_API_URL}/users/upload_image`,
       payload.photo.uri,
@@ -89,32 +99,12 @@ export const upload_image = async (payload: any) => {
         },
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: token,
         },
       }
     );
-    console.log("fileInfo: ", fileInfo);
-    // const formData = new FormData();
-    // formData.append("uid", payload.id);
-    // formData.append("type", payload.type);
-    // formData.append("photo", payload.photo);
-    // formData.append("mime_type", payload.photo.mimeType);
-
-    // if (!process.env.EXPO_PUBLIC_API_URL) {
-    //   throw new Error("EXPO_PUBLIC_API_URL is not defined");
-    // }
-    // const result = await axios.post(
-    //   `${process.env.EXPO_PUBLIC_API_URL}/users/upload_image`,
-    //   formData,
-    //   {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   }
-    // );
-    // if (result.status === 200) {
-    //   return result.data?.message;
-    // } else return false;
-  } catch (error) {
+    return fileInfo;
+  } catch (error: any) {
     if (axios.isAxiosError(error)) {
       console.log("Axios error:", {
         message: error.message,
@@ -124,6 +114,6 @@ export const upload_image = async (payload: any) => {
     } else {
       console.error("Unexpected error:", error);
     }
-    return false;
+    return error.response?.data?.error;
   }
 };

@@ -1,9 +1,11 @@
 import React from "react";
+import { KeyboardTypeOptions } from "react-native";
 import { TextInput } from "react-native-paper";
 
 type InputTextProps = {
   disabled?: boolean;
   error?: boolean;
+  keyboardType?: KeyboardTypeOptions | undefined;
   label: string;
   multiline?: boolean;
   numberOfLines?: number | undefined;
@@ -15,6 +17,7 @@ type InputTextProps = {
 const InputText = ({
   disabled = false,
   error = false,
+  keyboardType,
   label,
   multiline = false,
   numberOfLines,
@@ -34,6 +37,7 @@ const InputText = ({
       numberOfLines={numberOfLines}
       disabled={disabled}
       style={style}
+      keyboardType={keyboardType}
     />
   );
 };

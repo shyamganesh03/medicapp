@@ -16,10 +16,11 @@ const useProfileActions = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleProfileOptions = async (option: ProfileMenuItemsProps) => {
-    if (option.type === "sign-out") {
+    if (!!option.href) {
+      // @ts-ignore
+      router.push(option.href);
+    } else if (option.type === "sign-out") {
       await handleLogOut();
-    } else if (option.type === "edit-profile") {
-      router.push("/edit-profile");
     }
   };
 

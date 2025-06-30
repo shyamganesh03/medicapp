@@ -19,7 +19,13 @@ export const profileMenuItems: ProfileMenuItemsProps[] = [
     icon_name: "person",
     title: ProfileModule.OPTION_CARD_TITLE.EDIT_PROFILE,
     type: "edit-profile",
-    href: "",
+    href: "edit-profile",
+  },
+  {
+    icon_name: "payments",
+    title: ProfileModule.OPTION_CARD_TITLE.PAYMENT_MANAGEMENT,
+    type: "payment-management",
+    href: "payment_management",
   },
   {
     icon_name: "list-alt",
@@ -41,13 +47,7 @@ export const profileMenuItems: ProfileMenuItemsProps[] = [
   //   type: "saved-products-list",
   //   href: "",
   // },
-  {
-    icon_name: "payments",
-    title: ProfileModule.OPTION_CARD_TITLE.PAYMENT_MANAGEMENT,
-    type: "payment-management",
-    href: "",
-    isComingSoon: true,
-  },
+
   {
     icon_name: "star-rate",
     title: ProfileModule.OPTION_CARD_TITLE.RATE_US,

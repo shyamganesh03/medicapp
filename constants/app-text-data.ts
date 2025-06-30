@@ -77,3 +77,18 @@ export const PermissionModule = {
   GRANT_PERMISSION: "Grant permission",
   CAMERA_DESCRIPTION: "Allow Medic to access Camera",
 };
+
+export const PaymentModule = {
+  HEADER_TITLE: "Payment Management",
+  CARD_DETAILS: "Card Details",
+  SAVE: "Save",
+  EDIT: "Edit",
+  BACK: "Back",
+  INPUT_FIELD: {
+    CARD_NUMBER: "Card Number",
+    CARD_HOLDER_NAME: "Card Holder Name",
+    CARD_EXPIRY_MM: "MM",
+    CARD_EXPIRY_YY: "YY",
+    CARD_CVV: "CVV",
+  },
+};

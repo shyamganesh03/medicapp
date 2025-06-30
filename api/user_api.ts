@@ -117,3 +117,62 @@ export const upload_image = async (payload: any) => {
     return error.response?.data?.error;
   }
 };
+
+export const get_user_payment_method_details = async (uid: string) => {
+  try {
+    const token = await getAuthToken();
+    if (!process.env.EXPO_PUBLIC_API_URL) {
+      throw new Error("EXPO_PUBLIC_API_URL is not defined");
+    }
+    const result = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/payment/get_user_payment_method_details?uid=${uid}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return result.data?.payment_details;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.log("Axios error:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    return null;
+  }
+};
+
+export const update_user_payment_method = async (updatedUserPayment: any) => {
+  try {
+    const token = await getAuthToken();
+    if (!process.env.EXPO_PUBLIC_API_URL) {
+      throw new Error("EXPO_PUBLIC_API_URL is not defined");
+    }
+    const result = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/payment/update_user_payment_method`,
+      updatedUserPayment,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return result.data?.message;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.log("Axios error:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    return error.response?.data?.error;
+  }
+};

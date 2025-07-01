@@ -232,8 +232,19 @@ const ProductDetailsScreen = () => {
             )}
           </View>
           <View style={styles.ctaContainer}>
-            <Button mode="outlined">{MedicineModule.ADD_TO_CART}</Button>
-            <Button mode="contained">{MedicineModule.BUY_CTA}</Button>
+            <Button
+              mode="contained"
+              onPress={() => {
+                router.push({
+                  pathname: "/product_buy",
+                  params: {
+                    productDetails: JSON.stringify({ ...product, quantity: 1 }),
+                  },
+                });
+              }}
+            >
+              {MedicineModule.BUY_CTA}
+            </Button>
           </View>
         </View>
       </ScrollView>

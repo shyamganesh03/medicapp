@@ -1,8 +1,7 @@
-import { MedicineModule } from "@/constants/app-text-data";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-import { Button, Surface, Text, useTheme } from "react-native-paper";
+import { Surface, Text, useTheme } from "react-native-paper";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import ImageComponent from "./ImageComponent";
 
@@ -71,7 +70,7 @@ const ProductCard = ({
                 <Text>{item?.ratings}</Text>
               </View> */}
             </View>
-            <Button
+            {/* <Button
               mode="contained"
               onPress={() => {
                 console.log("object");
@@ -81,7 +80,7 @@ const ProductCard = ({
               style={{ alignSelf: "baseline" }}
             >
               {MedicineModule?.ADD_CTA}
-            </Button>
+            </Button> */}
           </View>
         </Surface>
       </Pressable>

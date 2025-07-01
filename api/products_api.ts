@@ -93,3 +93,29 @@ export const get_product_by_id = async (id: string) => {
     return error.response?.data?.error;
   }
 };
+
+export const create_Order = async (payload: any) => {
+  try {
+    if (!process.env.EXPO_PUBLIC_API_URL) {
+      throw new Error("EXPO_PUBLIC_API_URL is not defined");
+    }
+    const finalPayload = {
+      customer_id: payload?.userid,
+      total_amount: payload?.total_amount,
+      currency: "INR",
+      cart_items: payload.productList,
+    };
+
+    console.log("finalPayload: ", finalPayload);
+    const result = await axios.post(
+      `${process.env.EXPO_PUBLIC_API_URL}/orders/create_orders`,
+      finalPayload
+    );
+    if (result.data?.order_id) {
+      return result.data;
+    } else return false;
+  } catch (error: any) {
+    console.log("error: ", error);
+    return error.response?.data?.error;
+  }
+};

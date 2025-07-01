@@ -1,9 +1,12 @@
+import { create_Order } from "@/api/products_api";
 import {
   get_user_payment_method_details,
   update_user_payment_method,
 } from "@/api/user_api";
 import { useUserStore } from "@/store";
-import { useState } from "react";
+import { CFEnvironment, CFSession } from "cashfree-pg-api-contract";
+import { useEffect, useState } from "react";
+import { CFPaymentGatewayService } from "react-native-cashfree-pg-sdk";
 import Toast from "react-native-toast-message";
 
 const usePaymentManagement = () => {
@@ -18,6 +21,29 @@ const usePaymentManagement = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const userDetails = useUserStore((state: any) => state.userDetails);
+
+  useEffect(() => {
+    // Set up callback when component mounts
+    CFPaymentGatewayService.setCallback({
+      onVerify: (orderID) => {
+        /**
+         * Verify Payment status from the backend using order Status API
+         */
+        console.log("Verify callback triggered for order:", orderID);
+      },
+      onError: (error, orderID) => {
+        /**
+         * Handle error
+         */
+        console.error("Error callback:", error, "Order ID:", orderID);
+      },
+    });
+
+    // Clean up when component unmounts
+    return () => {
+      CFPaymentGatewayService.removeCallback();
+    };
+  }, []);
 
   const getPaymentDetails = async () => {
     setIsLoading(true);
@@ -53,12 +79,41 @@ const usePaymentManagement = () => {
     setIsLoading(false);
   };
 
+  const handleProductBuy = async (productList: any, totalAmount: string) => {
+    try {
+      setIsLoading(true);
+      //payload
+      const payload = {
+        userid: userDetails?.id,
+        total_amount: parseFloat(totalAmount),
+        productList,
+      };
+      console.log("payload: ", payload);
+      // create order
+      const orderDetails = await create_Order(payload);
+
+      console.log("orderDetails: ", orderDetails);
+      const session = new CFSession(
+        orderDetails?.cf_order_response?.payment_session_id,
+        orderDetails?.cf_order_response?.cf_order_id,
+        CFEnvironment.SANDBOX
+      );
+      console.log("session --> ", orderDetails, session);
+      CFPaymentGatewayService.doWebPayment(session);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log("Error: ", error);
+    }
+  };
+
   return {
     isLoading,
     paymentDetails,
     setPaymentDetails,
     getPaymentDetails,
     updatePaymentDetails,
+    handleProductBuy,
   };
 };
 

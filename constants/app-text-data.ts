@@ -92,3 +92,7 @@ export const PaymentModule = {
     CARD_CVV: "CVV",
   },
 };
+
+export const ProductPaymentModule = {
+  HEADER_TITLE: "Product Payment",
+};

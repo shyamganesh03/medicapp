@@ -57,6 +57,7 @@ export default function RootLayout() {
           <Stack.Screen name="edit-profile" />
           <Stack.Screen name="(medicines)" />
           <Stack.Screen name="payment_management" />
+          <Stack.Screen name="product_buy" />
           <Stack.Screen name="+not-found" />
         </Stack>
         {/* <StatusBar style="auto" /> */}

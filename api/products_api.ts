@@ -96,6 +96,8 @@ export const get_product_by_id = async (id: string) => {
 
 export const create_Order = async (payload: any) => {
   try {
+    const token = await getAuthToken();
+
     if (!process.env.EXPO_PUBLIC_API_URL) {
       throw new Error("EXPO_PUBLIC_API_URL is not defined");
     }
@@ -106,12 +108,37 @@ export const create_Order = async (payload: any) => {
       cart_items: payload.productList,
     };
 
-    console.log("finalPayload: ", finalPayload);
     const result = await axios.post(
       `${process.env.EXPO_PUBLIC_API_URL}/orders/create_orders`,
-      finalPayload
+      finalPayload,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
     if (result.data?.order_id) {
+      return result.data;
+    } else return false;
+  } catch (error: any) {
+    console.log("error: ", error);
+    return error.response?.data?.error;
+  }
+};
+
+export const getPaymentStatus = async (order_id: string) => {
+  try {
+    const token = await getAuthToken();
+
+    const result = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/orders/get_order_payment_details?order_id=${order_id}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    if (result.data?.payment_details) {
       return result.data;
     } else return false;
   } catch (error: any) {

@@ -20,16 +20,17 @@ const usePaymentManagement = () => {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const userDetails = useUserStore((state: any) => state.userDetails);
 
   useEffect(() => {
     // Set up callback when component mounts
     CFPaymentGatewayService.setCallback({
-      onVerify: (orderID) => {
-        /**
-         * Verify Payment status from the backend using order Status API
-         */
-        console.log("Verify callback triggered for order:", orderID);
+      onVerify: async (orderID) => {
+        Toast.show({
+          type: "success",
+          text2: "Your order has been successfully done!",
+        });
       },
       onError: (error, orderID) => {
         /**
@@ -81,34 +82,33 @@ const usePaymentManagement = () => {
 
   const handleProductBuy = async (productList: any, totalAmount: string) => {
     try {
-      setIsLoading(true);
+      setIsPaymentProcessing(true);
       //payload
       const payload = {
         userid: userDetails?.id,
         total_amount: parseFloat(totalAmount),
         productList,
       };
-      console.log("payload: ", payload);
       // create order
       const orderDetails = await create_Order(payload);
 
-      console.log("orderDetails: ", orderDetails);
       const session = new CFSession(
         orderDetails?.cf_order_response?.payment_session_id,
         orderDetails?.cf_order_response?.cf_order_id,
         CFEnvironment.SANDBOX
       );
-      console.log("session --> ", orderDetails, session);
+
       CFPaymentGatewayService.doWebPayment(session);
-      setIsLoading(false);
+      setIsPaymentProcessing(false);
     } catch (error) {
-      setIsLoading(false);
+      setIsPaymentProcessing(false);
       console.log("Error: ", error);
     }
   };
 
   return {
     isLoading,
+    isPaymentProcessing,
     paymentDetails,
     setPaymentDetails,
     getPaymentDetails,

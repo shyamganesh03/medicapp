@@ -21,12 +21,12 @@ export const profileMenuItems: ProfileMenuItemsProps[] = [
     type: "edit-profile",
     href: "edit-profile",
   },
-  {
-    icon_name: "payments",
-    title: ProfileModule.OPTION_CARD_TITLE.PAYMENT_MANAGEMENT,
-    type: "payment-management",
-    href: "payment_management",
-  },
+  // {
+  //   icon_name: "payments",
+  //   title: ProfileModule.OPTION_CARD_TITLE.PAYMENT_MANAGEMENT,
+  //   type: "payment-management",
+  //   href: "payment_management",
+  // },
   {
     icon_name: "list-alt",
     title: ProfileModule.OPTION_CARD_TITLE.MY_ORDERS,

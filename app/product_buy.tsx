@@ -63,7 +63,7 @@ const Section2 = memo(
             <Text>{address?.country}</Text>
           </View>
         </View>
-        <View
+        {/* <View
           style={[styles.card, { backgroundColor: colors.secondaryContainer }]}
         >
           <Text variant="titleMedium">payment Details</Text>
@@ -91,7 +91,7 @@ const Section2 = memo(
               <Text variant="bodyMedium">{paymentDetails?.card_cvv}</Text>
             </View>
           </View>
-        </View>
+        </View> */}
       </View>
     );
   }
@@ -131,8 +131,12 @@ const ProductBuy = () => {
   const router = useRouter();
   const [sectionId, setSectionId] = useState(1);
   const userDetails = useUserStore((state) => state.userDetails);
-  const { getPaymentDetails, paymentDetails, isLoading, handleProductBuy } =
-    usePaymentManagement();
+  const {
+    getPaymentDetails,
+    paymentDetails,
+    isPaymentProcessing,
+    handleProductBuy,
+  } = usePaymentManagement();
 
   useEffect(() => {
     getPaymentDetails();
@@ -190,7 +194,7 @@ const ProductBuy = () => {
             onPress={() => {
               handleProductBuy([productDetails], totalAmount);
             }}
-            loading={isLoading}
+            loading={isPaymentProcessing}
           >
             {"Proceed to Payment"}
           </Button>

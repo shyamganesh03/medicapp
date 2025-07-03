@@ -146,3 +146,28 @@ export const getPaymentStatus = async (order_id: string) => {
     return error.response?.data?.error;
   }
 };
+
+export const revoke_order = async (orderId: string) => {
+  try {
+    const token = await getAuthToken();
+
+    if (!process.env.EXPO_PUBLIC_API_URL) {
+      throw new Error("EXPO_PUBLIC_API_URL is not defined");
+    }
+
+    const result = await axios.get(
+      `${process.env.EXPO_PUBLIC_API_URL}/orders/revoke_order?order_id=${orderId}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    if (result.data?.message) {
+      return result.data;
+    } else return false;
+  } catch (error: any) {
+    console.log("error: ", error);
+    return error.response?.data?.error;
+  }
+};

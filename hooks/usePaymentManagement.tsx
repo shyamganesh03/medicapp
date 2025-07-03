@@ -1,11 +1,11 @@
-import { create_Order } from "@/api/products_api";
+import { create_Order, revoke_order } from "@/api/products_api";
 import {
   get_user_payment_method_details,
   update_user_payment_method,
 } from "@/api/user_api";
 import { useUserStore } from "@/store";
 import { CFEnvironment, CFSession } from "cashfree-pg-api-contract";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CFPaymentGatewayService } from "react-native-cashfree-pg-sdk";
 import Toast from "react-native-toast-message";
 
@@ -22,6 +22,7 @@ const usePaymentManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const userDetails = useUserStore((state: any) => state.userDetails);
+  const orderId = useRef("");
 
   useEffect(() => {
     // Set up callback when component mounts
@@ -32,11 +33,12 @@ const usePaymentManagement = () => {
           text2: "Your order has been successfully done!",
         });
       },
-      onError: (error, orderID) => {
-        /**
-         * Handle error
-         */
-        console.error("Error callback:", error, "Order ID:", orderID);
+      onError: async (error, orderID) => {
+        await revoke_order(orderId.current);
+        Toast.show({
+          type: "error",
+          text2: "Your order has been canceled please try again.",
+        });
       },
     });
 
